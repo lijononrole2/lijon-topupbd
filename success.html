@@ -2,84 +2,74 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Order Success - Lijon Top Up</title>
+  <title>Order Success</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background: #f4f4f4;
       margin: 0;
       padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #f5f7fa;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
     }
-    .success-box {
-      background: #fff;
+
+    .card {
+      background-color: white;
       padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+      border-radius: 15px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
       max-width: 400px;
       width: 90%;
       text-align: center;
     }
-    .success-box h2 {
+
+    h2 {
       color: #28a745;
-      margin-bottom: 15px;
+      margin-bottom: 10px;
     }
-    .order-info {
+
+    p {
+      margin: 5px 0;
       text-align: left;
-      margin-top: 20px;
     }
-    .order-info p {
-      margin: 8px 0;
+
+    .label {
       font-weight: bold;
     }
-    @media (max-width: 500px) {
-      .success-box {
-        padding: 20px;
-      }
+
+    .value {
+      margin-left: 5px;
+    }
+
+    .status {
+      font-weight: bold;
+      color: green;
     }
   </style>
 </head>
 <body>
-
-  <div class="success-box">
+  <div class="card">
     <h2>Order Successful!</h2>
     <p>Thank you for your order.</p>
-
-    <div class="order-info">
-      <p>Order ID: <span id="orderId"></span></p>
-      <p>Player ID: <span id="playerId"></span></p>
-      <p>Name: <span id="name"></span></p>
-      <p>Payment Method: <span id="payment"></span></p>
-      <p>Order Time: <span id="time"></span></p>
-      <p>Status: <span style="color: green;">Pending</span></p>
-    </div>
+    <hr style="margin: 20px 0;">
+    <div id="orderDetails"></div>
   </div>
 
   <script>
-    function getQueryParam(key) {
-      const urlParams = new URLSearchParams(window.location.search);
-      return urlParams.get(key);
-    }
+    const params = new URLSearchParams(window.location.search);
 
-    // Safely insert text (to prevent XSS)
-    function safeInsert(id, value) {
-      document.getElementById(id).innerText = value || "N/A";
-    }
-
-    // Insert values from query string
-    safeInsert("orderId", getQueryParam("order"));
-    safeInsert("playerId", getQueryParam("playerId"));
-    safeInsert("name", getQueryParam("name"));
-    safeInsert("payment", getQueryParam("payment"));
-
-    // Insert order time
-    const now = new Date().toLocaleString();
-    safeInsert("time", now);
+    const orderDetails = `
+      <p><span class="label">Order ID:</span><span class="value">${params.get('orderId')}</span></p>
+      <p><span class="label">Player ID:</span><span class="value">${params.get('playerId')}</span></p>
+      <p><span class="label">Name:</span><span class="value">${params.get('name') || 'N/A'}</span></p>
+      <p><span class="label">Payment Method:</span><span class="value">${params.get('paymentMethod') || 'N/A'}</span></p>
+      <p><span class="label">Order Time:</span><span class="value">${params.get('orderTime')}</span></p>
+      <p><span class="label">Status:</span> <span class="status">${params.get('status')}</span></p>
+    `;
+    document.getElementById('orderDetails').innerHTML = orderDetails;
   </script>
-
 </body>
 </html>
