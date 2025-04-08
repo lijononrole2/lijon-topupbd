@@ -69,6 +69,17 @@
 
     <button type="submit">Submit Order</button>
   </form>
+  <script>
+  const form = document.querySelector('form');
+  form.addEventListener('submit', function(e) {
+    e.preventDefault(); // ফর্ম সাবমিট বন্ধ করে দিচ্ছে
+
+    // (চাইলে এখানে ডাটা প্রসেস করতে পারো)
+
+    // success.html এ পাঠানো
+    window.location.href = "success.html";
+  });
+</script>
 
   <script>
     document.getElementById('orderForm').addEventListener('submit', function(e) {
