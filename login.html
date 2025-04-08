@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login - Lijon Top Up</title>
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 50px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Login to Lijon Top Up</h2>
+  <div id="g_id_onload"
+    data-client_id="102433301522-v0ip1uhure3mk804ljoovha5ft8m7u2.apps.googleusercontent.com"
+    data-callback="handleCredentialResponse">
+  </div>
+
+  <div class="g_id_signin" data-type="standard"></div>
+
+  <script>
+    const adminEmail = "mdshakillijon255@gmail.com";
+
+    function handleCredentialResponse(response) {
+      const jwt = response.credential;
+      const payload = JSON.parse(atob(jwt.split('.')[1]));
+      const email = payload.email;
+      
+      localStorage.setItem('loggedInEmail', email);
+      
+      if (email === adminEmail) {
+        window.location.href = "admin.html";
+      } else {
+        window.location.href = "order-history.html";
+      }
+    }
+  </script>
+
+</body>
+</html>
