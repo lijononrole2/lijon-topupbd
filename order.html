@@ -1,100 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Order - Lijon Top Up</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order Success</title>
   <style>
     body {
-      font-family: sans-serif;
-      background-color: #f9f9f9;
-      padding: 40px;
+      background-color: #e8f5e9;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .success-box {
+      background-color: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      width: 300px;
       text-align: center;
     }
+
     h2 {
-      color: #333;
+      color: green;
+      margin-bottom: 20px;
     }
-    form {
-      background: white;
-      padding: 30px;
-      border-radius: 8px;
-      box-shadow: 0 0 10px #ccc;
-      max-width: 400px;
-      margin: 0 auto;
+
+    .info {
+      text-align: left;
+      margin-top: 10px;
     }
-    input, select, button {
-      display: block;
-      width: 100%;
-      margin: 15px 0;
-      padding: 10px;
-      font-size: 16px;
-      border: 1px solid #aaa;
-      border-radius: 5px;
-    }
-    button {
-      background: #007bff;
-      color: white;
-      border: none;
-    }
-    button:hover {
-      background: #0056b3;
+
+    .info p {
+      margin: 8px 0;
     }
   </style>
 </head>
 <body>
 
-  <h2>Order Your Diamonds</h2>
-
-  <form id="orderForm">
-    <input type="text" placeholder="Your Free Fire ID" required />
-    
-    <select id="package" required>
-      <option value="">Select Diamond Package</option>
-      <option value="100">100 Diamonds - ৳90</option>
-      <option value="200">200 Diamonds - ৳175</option>
-      <option value="310">310 Diamonds - ৳260</option>
-      <option value="520">520 Diamonds - ৳430</option>
-      <option value="1000">1000 Diamonds - ৳800</option>
-    </select>
-
-    <select required>
-      <option value="">Select Payment Method</option>
-      <option value="bkash">bKash</option>
-      <option value="nagad">Nagad</option>
-      <option value="rocket">Rocket</option>
-      <option value="upay">Upay</option>
-    </select>
-
-    <input type="text" placeholder="Your Phone Number" required />
-
-    <button type="submit">Submit Order</button>
-  </form>
-  <script>
-  const form = document.querySelector('form');
-  form.addEventListener('submit', function(e) {
-    e.preventDefault(); // ফর্ম সাবমিট বন্ধ করে দিচ্ছে
-
-    // (চাইলে এখানে ডাটা প্রসেস করতে পারো)
-
-    // success.html এ পাঠানো
-    window.location.href = "success.html";
-  });
-</script>
+  <div class="success-box">
+    <h2>Order Successful!</h2>
+    <div class="info">
+      <p><strong>Order ID:</strong> <span id="order-id"></span></p>
+      <p><strong>Player ID:</strong> <span id="player-id"></span></p>
+      <p><strong>Time:</strong> <span id="order-time"></span></p>
+      <p><strong>Status:</strong> Pending</p>
+    </div>
+  </div>
 
   <script>
-    document.getElementById('orderForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      alert('Order submitted successfully! Thank you.');
-    });
+    // URL থেকে ডেটা নেয়া
+    const params = new URLSearchParams(window.location.search);
+    const orderId = params.get('order');
+    const playerId = document.referrer.includes('uid=') ? 
+                     new URLSearchParams(document.referrer.split('?')[1]).get('uid') : '';
 
-    // Auto-select package from URL
-    window.onload = function () {
-      const urlParams = new URLSearchParams(window.location.search);
-      const selectedPackage = urlParams.get('package');
-      if (selectedPackage) {
-        document.getElementById('package').value = selectedPackage;
-      }
-    }
+    // এখন সময় দেখানো
+    const now = new Date();
+    const timeString = now.toLocaleString();
+
+    // HTML-এ বসানো
+    document.getElementById('order-id').textContent = orderId || 'N/A';
+    document.getElementById('player-id').textContent = playerId || 'N/A';
+    document.getElementById('order-time').textContent = timeString;
   </script>
 
 </body>
