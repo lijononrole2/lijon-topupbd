@@ -1,163 +1,163 @@
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Payment - Lijon Top Up</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
     body {
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(to bottom right, #212121, #3a3a3a);
-      color: #fff;
-      padding: 20px;
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: url('https://i.ibb.co/5Y0Fdzf/freefire-bg.jpg') no-repeat center center fixed;
+      background-size: cover;
+      color: #000;
     }
 
     .container {
-      max-width: 450px;
-      margin: 60px auto;
-      background: #fff;
-      color: #222;
+      max-width: 500px;
+      margin: 50px auto;
+      background: rgba(255, 255, 255, 0.95);
       padding: 30px;
       border-radius: 12px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.3);
     }
 
     h2 {
       text-align: center;
-      margin-bottom: 20px;
-      color: #111;
+      margin-bottom: 10px;
     }
 
-    .highlight {
-      background-color: #ffeb3b;
-      padding: 3px 6px;
-      border-radius: 5px;
-      font-weight: bold;
-    }
-
-    .number-box {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: #f9f9f9;
-      padding: 12px 15px;
-      font-size: 18px;
-      margin: 12px 0;
-      border-radius: 6px;
-      border: 1px dashed #aaa;
-    }
-
-    .copy-btn {
-      padding: 5px 10px;
-      font-size: 14px;
-      background-color: #007bff;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-
-    .notice {
-      background: #fff3cd;
+    .info-box {
+      background: #eaffea;
       padding: 10px;
-      font-weight: bold;
-      font-size: 14px;
-      border-left: 5px solid #ff9800;
-      border-radius: 6px;
+      border: 2px solid #00cc66;
+      border-radius: 10px;
       margin-bottom: 15px;
+      font-weight: bold;
+      white-space: pre-line;
     }
 
     label {
       display: block;
-      margin-top: 15px;
-      margin-bottom: 6px;
+      margin: 10px 0 5px;
       font-weight: bold;
     }
 
-    select, input {
+    input, textarea {
       width: 100%;
       padding: 10px;
-      border: 1px solid #ccc;
-      font-size: 16px;
       border-radius: 6px;
+      border: 1px solid #aaa;
     }
 
-    button {
-      width: 100%;
+    .note {
+      background: #ffffcc;
+      padding: 10px;
+      border-left: 5px solid orange;
+      margin-top: 10px;
+      margin-bottom: 15px;
+      font-weight: bold;
+    }
+
+    .submit-btn {
       margin-top: 20px;
       padding: 12px;
+      width: 100%;
+      background: #00cc66;
+      color: white;
+      border: none;
       font-size: 16px;
-      background: #28a745;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .submit-btn:hover {
+      background: #00994d;
+    }
+
+    .copy-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .copy-btn {
+      padding: 8px 12px;
+      background: #007bff;
       color: white;
       border: none;
       border-radius: 6px;
       cursor: pointer;
     }
 
-    button:hover {
-      background: #218838;
+    .copy-btn:hover {
+      background: #0056b3;
     }
   </style>
 </head>
 <body>
-
   <div class="container">
-    <h2>Payment Page</h2>
+    <h2>Payment Details</h2>
+    <div class="info-box" id="orderInfo">Loading order details...</div>
 
-    <div class="highlight">Send Money Number</div>
-
-    <div class="number-box">
-      <span id="number">01611335109</span>
-      <button class="copy-btn" onclick="copyNumber()">Copy</button>
+    <label>Seller Number: <h3>Bkash || Nagad Only</h3></label>
+    <div class="copy-row">
+      <input type="text" id="sellerNumber" value="01611335109"
+      readonly />
+      <button class="copy-btn" onclick="copyNumber()">Copy                 
+      </button>
+      </br> 
     </div>
 
-    <div class="notice">
-      -Notice- অবশ্যই Send Money করবেন, এবং নিচে Transaction দিন
-    </div>
+    <div class="note">Screenshot অথবা Transaction id যেকোনো একটা দিলেই হবে</div>
 
     <form id="paymentForm">
-      <label for="method">Payment Method</label>
-      <select id="method" required>
-        <option value="">Select</option>
-        <option value="bkash">bKash</option>
-        <option value="nagad">Nagad</option>
-      </select>
+      <label for="transactionId">Transaction ID:</label>
+      <input type="text" id="transactionId" name="transactionId" placeholder="বিকাশ / নগদ ট্রানজেকশন আইড" />
 
-      <label for="txid">Transaction ID</label>
-      <input type="text" id="txid" placeholder="আপনার Transaction ID দিন" required>
+      <label for="screenshot">Upload Screenshot (optional):</label>
+      <input type="file" id="screenshot" name="screenshot" accept="image/*" />
 
-      <button type="submit">Proceed</button>
+      <button type="submit" class="submit-btn">Submit Payment</button>
     </form>
   </div>
 
   <script>
-    function copyNumber() {
-      const number = document.getElementById("number").innerText;
-      navigator.clipboard.writeText(number).then(() => {
-        alert("Number copied: " + number);
-      });
+    const params = new URLSearchParams(window.location.search);
+    const uid = params.get("uid");
+    const nickname = params.get("nickname");
+    const phone = params.get("phone");
+    const pack = params.get("package");
+    const price = params.get("price");
+
+    if (!uid || !nickname || !phone || !pack || !price) {
+      alert("Missing order information. Please start from index page.");
+      window.location.href = "index.html";
     }
+
+    document.getElementById("orderInfo").innerText =
+      `Package: ${pack} - ${price} TK\nUID: ${uid}\nName: ${nickname}\nPhone: ${phone}`;
 
     document.getElementById("paymentForm").addEventListener("submit", function(e) {
       e.preventDefault();
+      const trx = document.getElementById("transactionId").value.trim();
+      const screenshot = document.getElementById("screenshot").files.length;
 
-      const method = document.getElementById("method").value;
-      const txid = document.getElementById("txid").value.trim();
-
-      let valid = false;
-      if (method === "bkash") {
-        valid = /^[A-Za-z0-9]{10}$/.test(txid);
-      } else if (method === "nagad") {
-        valid = /^[A-Z0-9]{11,13}$/.test(txid);
+      if (!trx && !screenshot) {
+        alert("Screenshot অথবা Transaction ID যেকোনো একটা দিতে হবে।");
+        return;
       }
 
-    
-      
-
-      // Proceed to order page
-      window.location.href = `order.html?method=${method}&txid=${encodeURIComponent(txid)}`;
+      const query = `uid=${encodeURIComponent(uid)}&nickname=${encodeURIComponent(nickname)}&phone=${encodeURIComponent(phone)}&package=${encodeURIComponent(pack)}&price=${price}&trxid=${encodeURIComponent(trx || 'screenshot_uploaded')}`;
+      window.location.href = `success.html?${query}`;
     });
-  </script>
 
+    function copyNumber() {
+      const input = document.getElementById("sellerNumber");
+      input.select();
+      input.setSelectionRange(0, 99999);
+      document.execCommand("copy");
+      alert("Number copied: " + input.value);
+    }
+  </script>
 </body>
 </html>
