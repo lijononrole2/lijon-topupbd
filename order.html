@@ -1,154 +1,124 @@
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Order - Lijon Top Up</title>
   <style>
     body {
-      font-family: 'Arial', sans-serif;
       margin: 0;
-      padding: 20px;
-      background: url('https://i.ibb.co/qJcKp5M/ff-bg.jpg') no-repeat center center fixed;
+      font-family: Arial, sans-serif;
+      background: url('https://i.ibb.co/5Y0Fdzf/freefire-bg.jpg') no-repeat center center fixed;
       background-size: cover;
-      color: #fff;
+      color: #000;
     }
 
     .container {
       max-width: 500px;
-      margin: auto;
-      background: rgba(0, 0, 0, 0.7);
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px #000;
+      margin: 50px auto;
+      background: rgba(255, 255, 255, 0.95);
+      padding: 30px;
+      border-radius: 12px;
     }
 
     h2 {
       text-align: center;
-      margin-bottom: 20px;
-      color: #ffd700;
+      margin-bottom: 10px;
     }
 
-    .form-group {
-      margin-bottom: 15px;
+    .package-info {
+      text-align: center;
+      font-size: 18px;
+      margin-bottom: 20px;
+      background: #eaffea;
+      padding: 10px;
+      border: 2px solid #00cc66;
+      border-radius: 10px;
     }
 
     label {
       display: block;
-      margin-bottom: 5px;
+      margin: 10px 0 5px;
       font-weight: bold;
     }
 
-    input, select {
+    input {
       width: 100%;
       padding: 10px;
-      border: none;
-      border-radius: 5px;
-      font-size: 16px;
+      border-radius: 6px;
+      border: 1px solid #aaa;
     }
 
-    .note {
-      background-color: yellow;
-      color: #000;
-      padding: 10px;
-      margin-top: 10px;
-      font-weight: bold;
-      border-radius: 5px;
-    }
-
-    .contact-box {
-      background: #222;
-      padding: 15px;
-      margin-bottom: 15px;
-      border-left: 4px solid #28a745;
-    }
-
-    button {
-      width: 100%;
+    .next-btn {
+      margin-top: 20px;
       padding: 12px;
-      background: #28a745;
+      width: 100%;
+      background: #00cc66;
       color: white;
       border: none;
-      border-radius: 5px;
-      font-size: 18px;
+      font-size: 16px;
+      border-radius: 8px;
       cursor: pointer;
     }
 
-    button:hover {
-      background: #218838;
+    .next-btn:hover {
+      background: #00994d;
     }
   </style>
 </head>
 <body>
-
   <div class="container">
-    <h2>Diamond Order Form</h2>
-
-    <div class="contact-box">
-      Seller Contact Number:<br>
-      <strong>Bkash / Nagad: 01611335109</strong><br>
-      (এই নাম্বারে টাকা পাঠান)
-    </div>
+    <h2>Confirm Your Order</h2>
+    <div class="package-info" id="packageDetails">Loading package...</div>
 
     <form id="orderForm">
-      <div class="form-group">
-        <label for="playerId">Player ID</label>
-        <input type="text" id="playerId" name="playerId" required />
-      </div>
+      <label for="uid">Free Fire UID:</label>
+      <input type="text" id="uid" name="uid" required />
 
-      <div class="form-group">
-        <label for="name">Your Name</label>
-        <input type="text" id="name" name="name" required />
-      </div>
+      <label for="nickname">Nickname:</label>
+      <input type="text" id="nickname" name="nickname" required />
 
-      <div class="form-group">
-        <label for="paymentMethod">Payment Method</label>
-        <select id="paymentMethod" name="paymentMethod" required>
-          <option value="">Select</option>
-          <option value="bkash">bKash</option>
-          <option value="nagad">Nagad</option>
-        </select>
-      </div>
+      <label for="phone">Your Phone Number:</label>
+      <input type="text" id="phone" name="phone" required />
 
-      <div class="form-group">
-        <label for="screenshot">Screenshot Upload (optional)</label>
-        <input type="file" id="screenshot" name="screenshot" accept="image/*" />
-      </div>
+      <label>Seller Number:</label>
+      <input type="text" value="01611335109" readonly />
 
-      <div class="form-group">
-        <label for="transactionId">OR Transaction ID</label>
-        <input type="text" id="transactionId" name="transactionId" />
-      </div>
-
-      <div class="note">Screenshot অথবা Transaction id যেকোনো একটা দিলেই হবে</div>
-
-      <br>
-      <button type="submit">Submit Order</button>
+      <button type="submit" class="next-btn">Next</button>
     </form>
   </div>
 
   <script>
+    // Block access if not logged in
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (!user) {
+      alert("Please sign in from the homepage first.");
+      window.location.href = "index.html";
+    }
+
+    // Read URL data
+    const urlParams = new URLSearchParams(window.location.search);
+    const packageName = urlParams.get("package");
+    const price = urlParams.get("price");
+
+    // Display package
+    document.getElementById("packageDetails").innerText = `${packageName} - ${price} TK`;
+
+    // Handle form
     document.getElementById("orderForm").addEventListener("submit", function(e) {
       e.preventDefault();
+      const uid = document.getElementById("uid").value.trim();
+      const nickname = document.getElementById("nickname").value.trim();
+      const phone = document.getElementById("phone").value.trim();
 
-      const playerId = document.getElementById("playerId").value.trim();
-      const name = document.getElementById("name").value.trim();
-      const paymentMethod = document.getElementById("paymentMethod").value;
-      const transactionId = document.getElementById("transactionId").value.trim();
-      const screenshot = document.getElementById("screenshot").value;
-
-      if (!screenshot && !transactionId) {
-        alert("Screenshot অথবা Transaction id যেকোনো একটা দিতে হবে!");
+      if (!uid || !nickname || !phone) {
+        alert("Please fill all the fields.");
         return;
       }
 
-      const orderId = Math.floor(100000 + Math.random() * 900000);
-
-      // Redirect to payment.html with data
-      const url = `payment.html?order=${orderId}&playerId=${encodeURIComponent(playerId)}&name=${encodeURIComponent(name)}&payment=${encodeURIComponent(paymentMethod)}`;
-      window.location.href = url;
+      const query = `package=${encodeURIComponent(packageName)}&price=${price}&uid=${encodeURIComponent(uid)}&nickname=${encodeURIComponent(nickname)}&phone=${encodeURIComponent(phone)}`;
+      window.location.href = `payment.html?${query}`;
     });
   </script>
-
 </body>
 </html>
