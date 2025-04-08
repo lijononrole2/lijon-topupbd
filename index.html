@@ -6,81 +6,51 @@
   <title>Lijon Top Up</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background-color: #f1f1f1;
-      margin: 0;
-      padding: 0;
+      font-family: sans-serif;
       text-align: center;
+      background: #f2f2f2;
+      padding: 40px;
     }
-    header {
-      background-color: #333;
-      color: white;
-      padding: 20px 0;
-    }
-    .container {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      margin-top: 30px;
-    }
-    .card {
-      background-color: white;
-      border-radius: 10px;
-      padding: 20px;
+    select, button {
+      font-size: 18px;
+      padding: 10px 20px;
       margin: 15px;
-      width: 200px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      border-radius: 5px;
+      border: 1px solid #aaa;
     }
-    .card h3 {
-      margin: 10px 0;
-    }
-    .buy-btn {
+    button {
       background-color: #007bff;
       color: white;
-      padding: 10px;
       border: none;
-      border-radius: 5px;
       cursor: pointer;
     }
-    .buy-btn:hover {
+    button:hover {
       background-color: #0056b3;
     }
   </style>
 </head>
 <body>
 
-  <header>
-    <h1>Lijon Top Up</h1>
-    <p>Fast and secure Free Fire Diamond top-up</p>
-  </header>
+  <h2>Welcome to Lijon Top Up</h2>
+  <p>Select your Diamond Package:</p>
 
-  <div class="container">
-    <div class="card">
-      <h3>100 Diamonds</h3>
-      <p>৳90</p>
-      <button class="buy-btn">Buy Now</button>
-    </div>
-    <div class="card">
-      <h3>200 Diamonds</h3>
-      <p>৳175</p>
-      <button class="buy-btn">Buy Now</button>
-    </div>
-    <div class="card">
-      <h3>310 Diamonds</h3>
-      <p>৳260</p>
-      <button class="buy-btn">Buy Now</button>
-    </div>
-    <div class="card">
-      <h3>520 Diamonds</h3>
-      <p>৳430</p>
-      <button class="buy-btn">Buy Now</button>
-    </div>
-    <div class="card">
-      <h3>1000 Diamonds</h3>
-      <p>৳800</p>
-      <button class="buy-btn">Buy Now</button>
-    </div>
-  </div>
+  <select id="diamondPackage">
+    <option value="100">100 Diamonds - ৳90</option>
+    <option value="200">200 Diamonds - ৳175</option>
+    <option value="310">310 Diamonds - ৳260</option>
+    <option value="520">520 Diamonds - ৳430</option>
+    <option value="1000">1000 Diamonds - ৳800</option>
+  </select>
+
+  <br>
+  <button onclick="goToOrder()">Buy Now</button>
+
+  <script>
+    function goToOrder() {
+      const selected = document.getElementById('diamondPackage').value;
+      window.location.href = `order.html?package=${selected}`;
+    }
+  </script>
 
 </body>
 </html>
