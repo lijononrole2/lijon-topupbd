@@ -1,41 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Login - Lijon Top Up</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Login | Lijon Top Up</title>
+
+  <!-- Google Sign-In Client ID -->
+  <meta name="google-signin-client_id" content="102433301522-v0ip1uhure3mk804ljoovha5ft8m7u2.apps.googleusercontent.com">
+
+  <!-- Google Sign-In Script -->
   <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/build/jwt-decode.min.js"></script>
+
   <style>
     body {
       font-family: Arial, sans-serif;
-      padding: 50px;
       text-align: center;
+      padding-top: 100px;
+      background-color: #f2f2f2;
+    }
+    h1 {
+      color: #333;
     }
   </style>
 </head>
 <body>
 
-  <h2>Login to Lijon Top Up</h2>
+  <h1>Login to Lijon Top Up</h1>
+
+  <!-- Google Sign-In Button -->
   <div id="g_id_onload"
-    data-client_id="102433301522-v0ip1uhure3mk804ljoovha5ft8m7u2.apps.googleusercontent.com"
-    data-callback="handleCredentialResponse">
+       data-client_id="102433301522-v0ip1uhure3mk804ljoovha5ft8m7u2.apps.googleusercontent.com"
+       data-callback="handleCredentialResponse">
   </div>
 
   <div class="g_id_signin" data-type="standard"></div>
 
+  <!-- Handle Login -->
   <script>
-    const adminEmail = "mdshakillijon255@gmail.com";
-
     function handleCredentialResponse(response) {
-      const jwt = response.credential;
-      const payload = JSON.parse(atob(jwt.split('.')[1]));
-      const email = payload.email;
-      
-      localStorage.setItem('loggedInEmail', email);
-      
-      if (email === adminEmail) {
+      const data = jwt_decode(response.credential);
+      console.log("User Data:", data);
+
+      // Check if Admin
+      if (data.email === "mdshakillijon255@gmail.com") {
         window.location.href = "admin.html";
       } else {
+        // Save user email (optional)
+        localStorage.setItem("userEmail", data.email);
         window.location.href = "order-history.html";
       }
     }
