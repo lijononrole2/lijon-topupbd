@@ -3,75 +3,93 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Admin Panel - Lijon Top Up</title>
+  <title>Admin Panel</title>
   <style>
     body {
       font-family: Arial, sans-serif;
       padding: 20px;
+      background: #f9f9f9;
     }
+
+    h1 {
+      text-align: center;
+    }
+
     table {
-      border-collapse: collapse;
       width: 100%;
-      margin-top: 20px;
+      border-collapse: collapse;
+      margin-top: 30px;
+      background: #fff;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
+
     th, td {
-      border: 1px solid #ccc;
-      padding: 10px;
+      padding: 12px;
       text-align: left;
+      border-bottom: 1px solid #ddd;
     }
-    th {
-      background-color: #f4f4f4;
+
+    select {
+      padding: 5px;
     }
-    .logout {
-      float: right;
-      margin-top: -40px;
+
+    .status {
+      font-weight: bold;
+    }
+
+    .pending {
+      color: orange;
+    }
+
+    .confirmed {
+      color: green;
+    }
+
+    .returned {
+      color: red;
     }
   </style>
 </head>
 <body>
-
-  <h2>Admin Panel</h2>
-  <p>Welcome, Admin!</p>
-  <button class="logout" onclick="logout()">Logout</button>
-
+  <h1>Admin Panel - Manage Orders</h1>
   <table>
     <thead>
       <tr>
         <th>Order ID</th>
         <th>Player ID</th>
         <th>Diamond</th>
-        <th>Time</th>
+        <th>Payment</th>
+        <th>Transaction</th>
         <th>Status</th>
+        <th>Change</th>
       </tr>
     </thead>
-    <tbody id="orderTable"></tbody>
+    <tbody id="orderTable">
+      <tr>
+        <td>102938</td>
+        <td>123456789</td>
+        <td>200 Diamond</td>
+        <td>bKash</td>
+        <td>TXID12345</td>
+        <td class="status pending">Pending</td>
+        <td>
+          <select onchange="changeStatus(this)">
+            <option value="pending">Pending</option>
+            <option value="confirmed">Confirmed</option>
+            <option value="returned">Returned</option>
+          </select>
+        </td>
+      </tr>
+      <!-- Add more orders manually if needed -->
+    </tbody>
   </table>
 
   <script>
-    const API_URL = 'https://script.google.com/macros/s/AKfycbzSakERI8T--w3rRzTuyEhW4ucK9zril4kzrx8662Qn2cfEqFg9vCLPWwAriT-Rok2NJQ/exec';
-
-    fetch(API_URL)
-      .then(res => res.json())
-      .then(data => {
-        const table = document.getElementById('orderTable');
-        data.forEach(order => {
-          const row = document.createElement('tr');
-          row.innerHTML = `
-            <td>${order.orderId}</td>
-            <td>${order.playerId}</td>
-            <td>${order.diamondAmount}</td>
-            <td>${order.time}</td>
-            <td>${order.status}</td>
-          `;
-          table.appendChild(row);
-        });
-      });
-
-    function logout() {
-      localStorage.removeItem('loggedInEmail');
-      window.location.href = "login.html";
+    function changeStatus(select) {
+      const td = select.parentElement.previousElementSibling;
+      td.textContent = select.options[select.selectedIndex].text;
+      td.className = 'status ' + select.value;
     }
   </script>
-
 </body>
 </html>
