@@ -1,75 +1,98 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Order Success</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Order Success - Lijon Top Up</title>
   <style>
     body {
       margin: 0;
-      padding: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: #f5f7fa;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
+      font-family: Arial, sans-serif;
+      background: url('https://i.ibb.co/5Y0Fdzf/freefire-bg.jpg') no-repeat center center fixed;
+      background-size: cover;
+      color: #000;
     }
 
-    .card {
-      background-color: white;
+    .container {
+      max-width: 500px;
+      margin: 50px auto;
+      background: rgba(255, 255, 255, 0.95);
       padding: 30px;
-      border-radius: 15px;
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-      max-width: 400px;
-      width: 90%;
+      border-radius: 12px;
       text-align: center;
     }
 
     h2 {
-      color: #28a745;
+      color: green;
       margin-bottom: 10px;
     }
 
-    p {
-      margin: 5px 0;
+    .summary {
       text-align: left;
+      background: #e6f7ff;
+      padding: 15px;
+      border-radius: 10px;
+      margin-top: 20px;
+      border: 2px solid #66ccff;
+      font-size: 16px;
+      font-weight: bold;
+      white-space: pre-line;
     }
 
-    .label {
+    .success-note {
+      margin-top: 15px;
+      padding: 12px;
+      background: #d4edda;
+      border: 1px solid #28a745;
+      border-radius: 8px;
+      color: #155724;
       font-weight: bold;
     }
 
-    .value {
-      margin-left: 5px;
+    .back-btn {
+      margin-top: 25px;
+      padding: 12px 20px;
+      font-size: 16px;
+      background: #007bff;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
     }
 
-    .status {
-      font-weight: bold;
-      color: green;
+    .back-btn:hover {
+      background: #0056b3;
     }
   </style>
 </head>
 <body>
-  <div class="card">
-    <h2>Order Successful!</h2>
-    <p>Thank you for your order.</p>
-    <hr style="margin: 20px 0;">
-    <div id="orderDetails"></div>
+  <div class="container">
+    <h2>অর্ডার সফলভাবে সম্পন্ন হয়েছে!</h2>
+
+    <div class="success-note">আপনার অর্ডার আমরা পেয়েছি, কিছুক্ষণের মধ্যে ডায়মন্ড পাঠানো হবে।</div>
+
+    <div class="summary" id="orderSummary">Loading summary...</div>
+
+    <a href="index.html" class="back-btn">Back to Home</a>
   </div>
 
   <script>
     const params = new URLSearchParams(window.location.search);
+    const uid = params.get("uid");
+    const nickname = params.get("nickname");
+    const phone = params.get("phone");
+    const pack = params.get("package");
+    const price = params.get("price");
+    const trxid = params.get("trxid");
 
-    const orderDetails = `
-      <p><span class="label">Order ID:</span><span class="value">${params.get('orderId')}</span></p>
-      <p><span class="label">Player ID:</span><span class="value">${params.get('playerId')}</span></p>
-      <p><span class="label">Name:</span><span class="value">${params.get('name') || 'N/A'}</span></p>
-      <p><span class="label">Payment Method:</span><span class="value">${params.get('paymentMethod') || 'N/A'}</span></p>
-      <p><span class="label">Order Time:</span><span class="value">${params.get('orderTime')}</span></p>
-      <p><span class="label">Status:</span> <span class="status">${params.get('status')}</span></p>
-    `;
-    document.getElementById('orderDetails').innerHTML = orderDetails;
+    if (!uid || !nickname || !phone || !pack || !price || !trxid) {
+      document.getElementById("orderSummary").innerText = "Missing information. Please try again.";
+    } else {
+      document.getElementById("orderSummary").innerText =
+        `Name: ${nickname}\nUID: ${uid}\nPhone: ${phone}\nPackage: ${pack}\nPrice: ${price} TK\nPayment Info: ${trxid}`;
+    }
   </script>
 </body>
 </html>
