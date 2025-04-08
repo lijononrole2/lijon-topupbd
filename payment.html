@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Payment Info - Lijon Top Up</title>
+  <style>
+    body {
+      font-family: Arial;
+      padding: 20px;
+      background: #f7f7f7;
+    }
+    .container {
+      max-width: 500px;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h2 {
+      text-align: center;
+      color: #333;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    label {
+      font-weight: bold;
+    }
+    select, input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    .note {
+      margin-top: 10px;
+      background: #fff3cd;
+      padding: 10px;
+      border-left: 5px solid #ffc107;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #28a745;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #218838;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>Payment Info</h2>
+
+    <form id="paymentForm">
+      <div class="form-group">
+        <label for="method">Payment Method</label>
+        <select id="method" required>
+          <option value="">Choose One</option>
+          <option value="bkash">bKash</option>
+          <option value="nagad">Nagad</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="transaction">Transaction ID</label>
+        <input type="text" id="transaction" placeholder="Enter your transaction ID" required>
+      </div>
+
+      <div class="note">
+        ট্রানজ্যাকশন আইডি সঠিকভাবে লিখুন।<br>
+        bKash: 10 digit alphanumeric (A1B2C3D4E5)<br>
+        Nagad: Only numbers (11-13 digit)
+      </div>
+
+      <br>
+      <button type="submit">Proceed to Order</button>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById("paymentForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const method = document.getElementById("method").value;
+      const transaction = document.getElementById("transaction").value.trim();
+
+      let isValid = false;
+
+      if (method === "bkash") {
+        const bkashRegex = /^[A-Za-z0-9]{10}$/;
+        isValid = bkashRegex.test(transaction);
+      } else if (method === "nagad") {
+        const nagadRegex = /^[0-9]{11,13}$/;
+        isValid = nagadRegex.test(transaction);
+      }
+
+      if (!isValid) {
+        alert("Invalid Transaction ID for selected payment method.");
+        return;
+      }
+
+      // If valid, redirect to order.html
+      window.location.href = "order.html?method=" + method + "&tx=" + encodeURIComponent(transaction);
+    });
+  </script>
+
+</body>
+</html>
