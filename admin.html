@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Panel - Lijon Top Up</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-top: 20px;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 10px;
+      text-align: left;
+    }
+    th {
+      background-color: #f4f4f4;
+    }
+    .logout {
+      float: right;
+      margin-top: -40px;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Admin Panel</h2>
+  <p>Welcome, Admin!</p>
+  <button class="logout" onclick="logout()">Logout</button>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Order ID</th>
+        <th>Player ID</th>
+        <th>Diamond</th>
+        <th>Time</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody id="orderTable"></tbody>
+  </table>
+
+  <script>
+    const API_URL = 'https://script.google.com/macros/s/AKfycbzSakERI8T--w3rRzTuyEhW4ucK9zril4kzrx8662Qn2cfEqFg9vCLPWwAriT-Rok2NJQ/exec';
+
+    fetch(API_URL)
+      .then(res => res.json())
+      .then(data => {
+        const table = document.getElementById('orderTable');
+        data.forEach(order => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>${order.orderId}</td>
+            <td>${order.playerId}</td>
+            <td>${order.diamondAmount}</td>
+            <td>${order.time}</td>
+            <td>${order.status}</td>
+          `;
+          table.appendChild(row);
+        });
+      });
+
+    function logout() {
+      localStorage.removeItem('loggedInEmail');
+      window.location.href = "login.html";
+    }
+  </script>
+
+</body>
+</html>
