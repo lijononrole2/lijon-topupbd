@@ -1,56 +1,106 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
   <title>Lijon Top Up</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <style>
     body {
-      font-family: sans-serif;
-      text-align: center;
-      background: #f2f2f2;
+      font-family: 'Poppins', sans-serif;
+      background: url('https://i.ibb.co/zG6cftP/ff-bg.jpg') no-repeat center center fixed;
+      background-size: cover;
       padding: 40px;
+      text-align: center;
+      color: #fff;
     }
-    select, button {
-      font-size: 18px;
-      padding: 10px 20px;
-      margin: 15px;
-      border-radius: 5px;
-      border: 1px solid #aaa;
+    h1 {
+      margin-bottom: 30px;
+      font-size: 36px;
+      text-shadow: 1px 1px 4px #000;
     }
-    button {
-      background-color: #007bff;
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+    }
+    .card {
+      background: rgba(255,255,255,0.9);
+      padding: 20px;
+      border-radius: 12px;
+      width: 220px;
+      box-shadow: 0 2px 15px rgba(0,0,0,0.3);
+      text-align: center;
+      transition: 0.3s;
+    }
+    .card:hover {
+      transform: scale(1.06);
+    }
+    .card h3 {
+      color: #007bff;
+      margin: 10px 0;
+    }
+    .card p {
+      color: #333;
+      margin: 5px 0;
+      font-weight: bold;
+    }
+    .card a {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 10px 15px;
+      background: #007bff;
       color: white;
-      border: none;
-      cursor: pointer;
+      text-decoration: none;
+      border-radius: 5px;
     }
-    button:hover {
-      background-color: #0056b3;
+    .card a:hover {
+      background: #0056b3;
+    }
+    .icon {
+      font-size: 40px;
+      margin-bottom: 10px;
+      color: gold;
     }
   </style>
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
 <body>
 
-  <h2>Welcome to Lijon Top Up</h2>
-  <p>Select your Diamond Package:</p>
+  <h1>Buy Free Fire Diamonds</h1>
 
-  <select id="diamondPackage">
-    <option value="100">100 Diamonds - ৳90</option>
-    <option value="200">200 Diamonds - ৳175</option>
-    <option value="310">310 Diamonds - ৳260</option>
-    <option value="520">520 Diamonds - ৳430</option>
-    <option value="1000">1000 Diamonds - ৳800</option>
-  </select>
-
-  <br>
-  <button onclick="goToOrder()">Buy Now</button>
-
-  <script>
-    function goToOrder() {
-      const selected = document.getElementById('diamondPackage').value;
-      window.location.href = `order.html?package=${selected}`;
-    }
-  </script>
+  <div class="container">
+    <div class="card">
+      <div class="icon"><i class="fas fa-gem"></i></div>
+      <h3>100 Diamonds</h3>
+      <p>৳90</p>
+      <a href="order.html?package=100">Buy Now</a>
+    </div>
+    <div class="card">
+      <div class="icon"><i class="fas fa-gem"></i></div>
+      <h3>200 Diamonds</h3>
+      <p>৳175</p>
+      <a href="order.html?package=200">Buy Now</a>
+    </div>
+    <div class="card">
+      <div class="icon"><i class="fas fa-gem"></i></div>
+      <h3>310 Diamonds</h3>
+      <p>৳260</p>
+      <a href="order.html?package=310">Buy Now</a>
+    </div>
+    <div class="card">
+      <div class="icon"><i class="fas fa-gem"></i></div>
+      <h3>520 Diamonds</h3>
+      <p>৳430</p>
+      <a href="order.html?package=520">Buy Now</a>
+    </div>
+    <div class="card">
+      <div class="icon"><i class="fas fa-gem"></i></div>
+      <h3>1000 Diamonds</h3>
+      <p>৳800</p>
+      <a href="order.html?package=1000">Buy Now</a>
+    </div>
+  </div>
 
 </body>
 </html>
