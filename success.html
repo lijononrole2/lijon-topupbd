@@ -2,68 +2,83 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Order Success</title>
+  <title>Order Success - Lijon Top Up</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #e6ffee;
-      padding: 20px;
-      text-align: center;
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
     }
     .success-box {
       background: #fff;
-      max-width: 500px;
-      margin: auto;
       padding: 30px;
       border-radius: 12px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+      max-width: 400px;
+      width: 90%;
+      text-align: center;
     }
-    h2 {
-      color: #4CAF50;
-      margin-bottom: 20px;
+    .success-box h2 {
+      color: #28a745;
+      margin-bottom: 15px;
     }
-    .info {
+    .order-info {
       text-align: left;
       margin-top: 20px;
     }
-    .info div {
-      margin: 10px 0;
-      font-size: 16px;
-    }
-    .info div span {
+    .order-info p {
+      margin: 8px 0;
       font-weight: bold;
+    }
+    @media (max-width: 500px) {
+      .success-box {
+        padding: 20px;
+      }
     }
   </style>
 </head>
 <body>
 
   <div class="success-box">
-    <h2>Order Success!</h2>
-    <p>Thank you for your purchase.</p>
+    <h2>Order Successful!</h2>
+    <p>Thank you for your order.</p>
 
-    <div class="info">
-      <div><span>Order ID:</span> <span id="orderId"></span></div>
-      <div><span>Player ID:</span> <span id="playerId"></span></div>
-      <div><span>Name:</span> <span id="name"></span></div>
-      <div><span>Diamond:</span> <span id="diamonds"></span></div>
-      <div><span>Price:</span> <span id="price"></span></div>
-      <div><span>Payment Method:</span> <span id="payment"></span></div>
-      <div><span>Time:</span> <span id="date"></span></div>
-      <div><span>Status:</span> <span style="color: green;">Pending</span></div>
+    <div class="order-info">
+      <p>Order ID: <span id="orderId"></span></p>
+      <p>Player ID: <span id="playerId"></span></p>
+      <p>Name: <span id="name"></span></p>
+      <p>Payment Method: <span id="payment"></span></p>
+      <p>Order Time: <span id="time"></span></p>
+      <p>Status: <span style="color: green;">Pending</span></p>
     </div>
   </div>
 
   <script>
-    const params = new URLSearchParams(window.location.search);
+    function getQueryParam(key) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(key);
+    }
 
-    document.getElementById('orderId').textContent = params.get('order');
-    document.getElementById('playerId').textContent = params.get('playerId');
-    document.getElementById('name').textContent = params.get('name');
-    document.getElementById('diamonds').textContent = params.get('diamonds') + ' Diamonds';
-    document.getElementById('price').textContent = params.get('price');
-    document.getElementById('payment').textContent = params.get('payment');
-    document.getElementById('date').textContent = params.get('date');
+    // Safely insert text (to prevent XSS)
+    function safeInsert(id, value) {
+      document.getElementById(id).innerText = value || "N/A";
+    }
+
+    // Insert values from query string
+    safeInsert("orderId", getQueryParam("order"));
+    safeInsert("playerId", getQueryParam("playerId"));
+    safeInsert("name", getQueryParam("name"));
+    safeInsert("payment", getQueryParam("payment"));
+
+    // Insert order time
+    const now = new Date().toLocaleString();
+    safeInsert("time", now);
   </script>
 
 </body>
