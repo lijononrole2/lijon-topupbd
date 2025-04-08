@@ -3,64 +3,53 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Order Form - Lijon Top Up</title>
+  <title>Order - Lijon Top Up</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
+      font-family: sans-serif;
       background-color: #f9f9f9;
-      padding: 20px;
-    }
-    h2 {
+      padding: 40px;
       text-align: center;
     }
+    h2 {
+      color: #333;
+    }
     form {
+      background: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px #ccc;
       max-width: 400px;
       margin: 0 auto;
-      background-color: #fff;
-      padding: 25px;
-      border-radius: 10px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
-    label {
+    input, select, button {
       display: block;
-      margin-top: 15px;
-      font-weight: bold;
-    }
-    input, select {
       width: 100%;
+      margin: 15px 0;
       padding: 10px;
-      margin-top: 5px;
+      font-size: 16px;
+      border: 1px solid #aaa;
       border-radius: 5px;
-      border: 1px solid #ccc;
     }
     button {
-      margin-top: 20px;
-      width: 100%;
-      padding: 12px;
-      background-color: #007bff;
+      background: #007bff;
       color: white;
       border: none;
-      border-radius: 5px;
-      font-size: 16px;
-      cursor: pointer;
     }
     button:hover {
-      background-color: #0056b3;
+      background: #0056b3;
     }
   </style>
 </head>
 <body>
 
-  <h2>Submit Your Order</h2>
+  <h2>Order Your Diamonds</h2>
+
   <form id="orderForm">
-    <label for="uid">Free Fire UID:</label>
-    <input type="text" id="uid" name="uid" required />
-
-    <label for="name">Your Name:</label>
-    <input type="text" id="name" name="name" required />
-
-    <label for="package">Select Package:</label>
-    <select id="package" name="package">
+    <input type="text" placeholder="Your Free Fire ID" required />
+    
+    <select id="package" required>
+      <option value="">Select Diamond Package</option>
       <option value="100">100 Diamonds - ৳90</option>
       <option value="200">200 Diamonds - ৳175</option>
       <option value="310">310 Diamonds - ৳260</option>
@@ -68,18 +57,15 @@
       <option value="1000">1000 Diamonds - ৳800</option>
     </select>
 
-    <label for="method">Payment Method:</label>
-    <select id="method" name="method">
+    <select required>
+      <option value="">Select Payment Method</option>
       <option value="bkash">bKash</option>
       <option value="nagad">Nagad</option>
       <option value="rocket">Rocket</option>
+      <option value="upay">Upay</option>
     </select>
 
-    <label for="number">Payment Number:</label>
-    <input type="text" id="number" name="number" required />
-
-    <label for="trxid">Transaction ID:</label>
-    <input type="text" id="trxid" name="trxid" required />
+    <input type="text" placeholder="Your Phone Number" required />
 
     <button type="submit">Submit Order</button>
   </form>
@@ -89,6 +75,15 @@
       e.preventDefault();
       alert('Order submitted successfully! Thank you.');
     });
+
+    // Auto-select package from URL
+    window.onload = function () {
+      const urlParams = new URLSearchParams(window.location.search);
+      const selectedPackage = urlParams.get('package');
+      if (selectedPackage) {
+        document.getElementById('package').value = selectedPackage;
+      }
+    }
   </script>
 
 </body>
