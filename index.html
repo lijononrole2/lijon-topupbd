@@ -2,124 +2,179 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Lijon Top Up</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <title>Lijon Top Up</title>
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
   <style>
     body {
-      font-family: 'Inter', sans-serif;
       margin: 0;
-      padding: 0;
-      background: #f7f7f7;
-      text-align: center;
+      font-family: Arial, sans-serif;
+      background: url('https://i.ibb.co/5Y0Fdzf/freefire-bg.jpg') no-repeat center center fixed;
+      background-size: cover;
+      color: #000;
     }
 
     header {
-      background-color: #4CAF50;
-      color: white;
-      padding: 20px;
-      font-size: 24px;
-      font-weight: 600;
-    }
-
-    .container {
-      margin: 30px auto;
-      max-width: 500px;
-    }
-
-    .diamond-card {
-      background: white;
-      border: 2px solid #4CAF50;
-      padding: 20px;
-      border-radius: 12px;
-      margin: 15px 0;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-
-    .diamond-card:hover {
-      background: #e9f9ec;
-      transform: scale(1.03);
-    }
-
-    .diamond-title {
-      font-size: 20px;
-      font-weight: 600;
-      color: #4CAF50;
-    }
-
-    .price {
-      font-size: 16px;
-      color: #444;
-    }
-
-    #logoutBtn {
-      margin-top: 20px;
-      background-color: #d9534f;
-      border: none;
-      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       padding: 10px 20px;
-      border-radius: 8px;
+      background-color: rgba(255, 255, 255, 0.9);
+    }
+
+    header h1 {
+      font-size: 24px;
+      margin: 0;
+    }
+
+    .login-area {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .login-area img {
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+    }
+
+    .banner {
+      text-align: center;
+      padding: 40px 20px 20px;
+      background: rgba(255, 255, 255, 0.9);
+    }
+
+    .banner h2 {
+      font-size: 32px;
+      margin-bottom: 10px;
+    }
+
+    .menu-buttons {
+      margin: 10px auto;
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+    }
+
+    .menu-buttons button {
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 10px;
+      background-color: #ccc;
       cursor: pointer;
     }
 
+    .package-container {
+      background: white;
+      max-width: 700px;
+      margin: auto;
+      padding: 20px;
+      border-radius: 10px;
+      margin-top: 10px;
+      text-align: center;
+    }
+
+    .package-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .package-box {
+      border: 2px solid #00cc66;
+      padding: 15px;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    .package-box:hover {
+      background-color: #f0f0f0;
+    }
   </style>
 </head>
 <body>
+  <header>
+    <h1>Lijon Top Up</h1>
+    <div class="login-area" id="loginSection">
+      <div id="g_id_onload"
+           data-client_id="YOUR_CLIENT_ID"
+           data-callback="handleCredentialResponse"
+           data-auto_prompt="false">
+      </div>
+      <div class="g_id_signin" data-type="standard"></div>
+    </div>
+  </header>
 
-  <header>Lijon Top Up</header>
+  <section class="banner">
+    <h2>Uid Top Up</h2>
+    <div class="menu-buttons">
+      <button>Udi Top</button>
+      <button>Unipin</button>
+      <button>Monthly</button>
+    </div>
+  </section>
 
-  <div class="container" id="diamondContainer">
-    <div class="diamond-card" onclick="selectPackage(100, 90)">
-      <div class="diamond-title">100 Diamonds</div>
-      <div class="price">৳90</div>
+  <section class="package-container">
+    <h2>Sign in to select a package</h2>
+    <div class="package-grid">
+      <div class="package-box" onclick="selectPackage('25 Diamond', '24')">25 Diamonds<br>24 TK</div>
+      <div class="package-box" onclick="selectPackage('50 Diamond', '38')">50 Diamonds<br>38 TK</div>
+      <div class="package-box" onclick="selectPackage('115 Diamond', '80')">115 Diamonds<br>80 TK</div>
+      <div class="package-box" onclick="selectPackage('240 Diamond', '160')">240 Diamonds<br>160 TK</div>
+      <div class="package-box" onclick="selectPackage('355 Diamond', '240')">355 Diamonds<br>240 TK</div>
+      <div class="package-box" onclick="selectPackage('480 Diamond', '320')">480 Diamonds<br>320 TK</div>
+      <div class="package-box" onclick="selectPackage('610 Diamond', '410')">610 Diamonds<br>410 TK</div>
+      <div class="package-box" onclick="selectPackage('850 Diamond', '1230')">850 Diamonds<br>1230 TK</div>
+      <div class="package-box" onclick="selectPackage('Weekly', '158')">Weekly<br>158 TK</div>
+      <div class="package-box" onclick="selectPackage('Monthly', '790')">Monthly<br>790 TK</div>
     </div>
-    <div class="diamond-card" onclick="selectPackage(200, 170)">
-      <div class="diamond-title">200 Diamonds</div>
-      <div class="price">৳170</div>
-    </div>
-    <div class="diamond-card" onclick="selectPackage(310, 250)">
-      <div class="diamond-title">310 Diamonds</div>
-      <div class="price">৳250</div>
-    </div>
-    <div class="diamond-card" onclick="selectPackage(520, 400)">
-      <div class="diamond-title">520 Diamonds</div>
-      <div class="price">৳400</div>
-    </div>
-    <div class="diamond-card" onclick="selectPackage(1060, 790)">
-      <div class="diamond-title">1060 Diamonds</div>
-      <div class="price">৳790</div>
-    </div>
-
-    <button id="logoutBtn" onclick="logout()" style="display:none;">Logout</button>
-  </div>
+  </section>
 
   <script>
-    // চেক করে ইউজার লগইন করেছে কিনা
-    const user = JSON.parse(localStorage.getItem("user"));
+    let userData = null;
 
-    if (!user) {
-      alert("Please login first!");
-      window.location.href = "login.html";
-    } else {
-      document.getElementById("logoutBtn").style.display = "block";
+    function handleCredentialResponse(response) {
+      const data = parseJwt(response.credential);
+      userData = data;
+      localStorage.setItem("user", JSON.stringify(data));
+
+      const loginSection = document.getElementById("loginSection");
+      loginSection.innerHTML = `
+        <img src="${data.picture}" alt="Profile">
+        <span>${data.name}</span>
+      `;
     }
 
-    function selectPackage(diamonds, price) {
+    function parseJwt(token) {
+      const base64Url = token.split('.')[1];
+      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      const jsonPayload = decodeURIComponent(atob(base64).split('').map(c => {
+          return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+      }).join(''));
+      return JSON.parse(jsonPayload);
+    }
+
+    function selectPackage(name, price) {
+      const user = JSON.parse(localStorage.getItem("user"));
       if (!user) {
-        alert("Login required to buy diamonds!");
-        window.location.href = "login.html";
+        alert("Please sign in first to continue.");
         return;
       }
-      window.location.href = `order.html?diamonds=${diamonds}&price=${price}`;
+      window.location.href = `order.html?package=${encodeURIComponent(name)}&price=${price}`;
     }
 
-    function logout() {
-      localStorage.removeItem("user");
-      alert("Logged out");
-      window.location.reload();
+    window.onload = () => {
+      const user = JSON.parse(localStorage.getItem("user"));
+      if (user) {
+        document.getElementById("loginSection").innerHTML = `
+          <img src="${user.picture}" alt="Profile">
+          <span>${user.name}</span>
+        `;
+      }
     }
   </script>
-
 </body>
 </html>
