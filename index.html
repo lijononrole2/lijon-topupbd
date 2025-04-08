@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lijon Top Up</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Lijon Top Up</h1>
+  </header>
+
+  <section class="topup-form">
+    <form id="topupForm">
+      <label for="playerId">Free Fire ID:</label>
+      <input type="text" id="playerId" name="playerId" required>
+
+      <label for="diamond">ডায়মন্ড প্যাকেজ:</label>
+      <select id="diamond" name="diamond">
+        <option value="100">100 Diamonds</option>
+        <option value="200">200 Diamonds</option>
+        <option value="300">300 Diamonds</option>
+        <option value="400">400 Diamonds</option>
+        <option value="500">500 Diamonds</option>
+      </select>
+
+      <label for="payment">পেমেন্ট মেথড:</label>
+      <select id="payment" name="payment">
+        <option value="bkash">Bkash</option>
+        <option value="nagad">Nagad</option>
+        <option value="rocket">Rocket</option>
+      </select>
+
+      <button type="submit">টপ আপ করো</button>
+    </form>
+  </section>
+
+  <script src="script.js"></script>
+</body>
+</html>
