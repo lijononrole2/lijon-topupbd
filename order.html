@@ -36,87 +36,101 @@
       border-radius: 6px;
       border: 1px solid #ccc;
     }
-    .summary {
-      background: #e8fce9;
+<!-- order.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Order Details - Lijon Top Up</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    .form-box {
+      max-width: 400px;
+      margin: auto;
+      padding: 20px;
+      border: 2px solid #ddd;
+      border-radius: 10px;
+    }
+    input, select, button {
+      width: 100%;
       padding: 10px;
-      margin-bottom: 20px;
-      border-radius: 6px;
-      font-weight: bold;
+      margin: 10px 0;
     }
-    button {
-      padding: 10px 20px;
-      background-color: #4CAF50;
-      border: none;
-      color: white;
-      font-size: 16px;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #45a049;
+    .error {
+      color: red;
+      font-size: 0.9em;
     }
   </style>
 </head>
 <body>
 
-  <div class="order-box">
-    <h2>Confirm Your Order</h2>
-
-    <div class="summary">
-      <div>Diamond: <span id="diamondDisplay"></span></div>
-      <div>Price: <span id="priceDisplay"></span></div>
-    </div>
-
+  <div class="form-box">
+    <h2>Submit Your Order</h2>
     <form id="orderForm">
-      <label for="playerId">Player ID</label>
-      <input type="text" id="playerId" name="playerId" required>
+      <label>Player ID:</label>
+      <input type="text" id="playerId" placeholder="Enter Player ID" />
+      <div class="error" id="errorPlayerId"></div>
 
-      <label for="name">Your Name</label>
-      <input type="text" id="name" name="name" required>
+      <label>Your Name:</label>
+      <input type="text" id="name" placeholder="Enter your name" />
+      <div class="error" id="errorName"></div>
 
-      <label for="payment">Payment Method</label>
-      <select id="payment" name="payment" required>
-        <option value="">Select Payment</option>
-        <option value="bKash">bKash</option>
-        <option value="Nagad">Nagad</option>
-        <option value="Rocket">Rocket</option>
-        <option value="Upay">Upay</option>
+      <label>Payment Method:</label>
+      <select id="payment">
+        <option value="">Select Payment Method</option>
+        <option>bKash</option>
+        <option>Nagad</option>
+        <option>Rocket</option>
       </select>
+      <div class="error" id="errorPayment"></div>
 
       <button type="submit">Submit Order</button>
     </form>
   </div>
 
   <script>
-    // Show diamond info from URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const diamonds = urlParams.get('diamonds');
-    const price = urlParams.get('price');
+    const form = document.getElementById("orderForm");
 
-    document.getElementById('diamondDisplay').textContent = diamonds + ' Diamonds';
-    document.getElementById('priceDisplay').textContent = price;
-
-    // Form submit
-    document.getElementById('orderForm').addEventListener('submit', function(e) {
+    form.addEventListener("submit", function (e) {
       e.preventDefault();
 
-      const playerId = document.getElementById('playerId').value;
-      const name = document.getElementById('name').value;
-      const payment = document.getElementById('payment').value;
+      // Clear previous errors
+      document.getElementById("errorPlayerId").textContent = "";
+      document.getElementById("errorName").textContent = "";
+      document.getElementById("errorPayment").textContent = "";
 
-      const orderId = Math.floor(100000 + Math.random() * 900000);
-      const date = new Date().toLocaleString();
+      let isValid = true;
 
-      const params = new URLSearchParams();
-      params.append('order', orderId);
-      params.append('playerId', playerId);
-      params.append('name', name);
-      params.append('payment', payment);
-      params.append('diamonds', diamonds);
-      params.append('price', price);
-      params.append('date', date);
+      const playerId = document.getElementById("playerId").value.trim();
+      const name = document.getElementById("name").value.trim();
+      const payment = document.getElementById("payment").value;
 
-      window.location.href = 'success.html?' + params.toString();
+      if (playerId === "") {
+        document.getElementById("errorPlayerId").textContent = "Player ID is required.";
+        isValid = false;
+      }
+
+      if (name === "") {
+        document.getElementById("errorName").textContent = "Name is required.";
+        isValid = false;
+      }
+
+      if (payment === "") {
+        document.getElementById("errorPayment").textContent = "Please select a payment method.";
+        isValid = false;
+      }
+
+      if (isValid) {
+        const orderId = Math.floor(100000 + Math.random() * 900000);
+        const time = new Date().toLocaleString();
+
+        // Redirect to success page with parameters
+        window.location.href = `success.html?order=${orderId}&playerId=${encodeURIComponent(playerId)}&name=${encodeURIComponent(name)}&payment=${encodeURIComponent(payment)}&time=${encodeURIComponent(time)}&status=Pending`;
+      }
     });
   </script>
 
