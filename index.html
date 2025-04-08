@@ -2,105 +2,86 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Lijon Top Up</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <style>
     body {
-      font-family: 'Poppins', sans-serif;
-      background: url('https://i.ibb.co/zG6cftP/ff-bg.jpg') no-repeat center center fixed;
-      background-size: cover;
-      padding: 40px;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f2f2f2;
+      padding: 20px;
       text-align: center;
-      color: #fff;
     }
     h1 {
       margin-bottom: 30px;
-      font-size: 36px;
-      text-shadow: 1px 1px 4px #000;
+      color: #333;
     }
-    .container {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
+    .package-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
       gap: 20px;
+      max-width: 800px;
+      margin: 0 auto;
     }
-    .card {
-      background: rgba(255,255,255,0.9);
+    .package-box {
+      background-color: #ffffff;
       padding: 20px;
       border-radius: 12px;
-      width: 220px;
-      box-shadow: 0 2px 15px rgba(0,0,0,0.3);
-      text-align: center;
-      transition: 0.3s;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      cursor: pointer;
+      transition: transform 0.2s ease;
+      border: 2px solid #4CAF50;
     }
-    .card:hover {
-      transform: scale(1.06);
+    .package-box:hover {
+      transform: scale(1.05);
+      background-color: #e8fce9;
     }
-    .card h3 {
-      color: #007bff;
-      margin: 10px 0;
+    .package-box h3 {
+      margin: 0;
+      font-size: 20px;
+      color: #4CAF50;
     }
-    .card p {
-      color: #333;
-      margin: 5px 0;
-      font-weight: bold;
-    }
-    .card a {
-      display: inline-block;
-      margin-top: 10px;
-      padding: 10px 15px;
-      background: #007bff;
-      color: white;
-      text-decoration: none;
-      border-radius: 5px;
-    }
-    .card a:hover {
-      background: #0056b3;
-    }
-    .icon {
-      font-size: 40px;
-      margin-bottom: 10px;
-      color: gold;
+    .package-box p {
+      margin-top: 5px;
+      font-size: 16px;
+      color: #666;
     }
   </style>
-  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
 <body>
 
-  <h1>Buy Free Fire Diamonds</h1>
+  <h1>Select Your Diamond Package</h1>
 
-  <div class="container">
-    <div class="card">
-      <div class="icon"><i class="fas fa-gem"></i></div>
+  <div class="package-grid">
+    <div class="package-box" onclick="goToOrder('100', '৳90')">
       <h3>100 Diamonds</h3>
       <p>৳90</p>
-      <a href="order.html?package=100">Buy Now</a>
     </div>
-    <div class="card">
-      <div class="icon"><i class="fas fa-gem"></i></div>
+    <div class="package-box" onclick="goToOrder('200', '৳170')">
       <h3>200 Diamonds</h3>
-      <p>৳175</p>
-      <a href="order.html?package=200">Buy Now</a>
+      <p>৳170</p>
     </div>
-    <div class="card">
-      <div class="icon"><i class="fas fa-gem"></i></div>
+    <div class="package-box" onclick="goToOrder('310', '৳250')">
       <h3>310 Diamonds</h3>
-      <p>৳260</p>
-      <a href="order.html?package=310">Buy Now</a>
+      <p>৳250</p>
     </div>
-    <div class="card">
-      <div class="icon"><i class="fas fa-gem"></i></div>
+    <div class="package-box" onclick="goToOrder('520', '৳400')">
       <h3>520 Diamonds</h3>
-      <p>৳430</p>
-      <a href="order.html?package=520">Buy Now</a>
+      <p>৳400</p>
     </div>
-    <div class="card">
-      <div class="icon"><i class="fas fa-gem"></i></div>
-      <h3>1000 Diamonds</h3>
-      <p>৳800</p>
-      <a href="order.html?package=1000">Buy Now</a>
+    <div class="package-box" onclick="goToOrder('1060', '৳790')">
+      <h3>1060 Diamonds</h3>
+      <p>৳790</p>
     </div>
   </div>
+
+  <script>
+    function goToOrder(diamonds, price) {
+      const params = new URLSearchParams();
+      params.append('diamonds', diamonds);
+      params.append('price', price);
+      window.location.href = 'order.html?' + params.toString();
+    }
+  </script>
 
 </body>
 </html>
