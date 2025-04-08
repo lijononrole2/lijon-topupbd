@@ -1,92 +1,106 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Order Details</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #f2f2f2;
-      padding: 20px;
-      text-align: center;
-    }
-    .order-box {
-      background: #fff;
-      max-width: 500px;
-      margin: auto;
-      padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.1);
-    }
-    h2 {
-      color: #4CAF50;
-      margin-bottom: 20px;
-    }
-    label {
-      display: block;
-      text-align: left;
-      margin-bottom: 5px;
-      font-weight: bold;
-    }
-    input, select {
-      width: 100%;
-      padding: 10px;
-      margin-bottom: 15px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-    }
-<!-- order.html -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Order Details - Lijon Top Up</title>
+  <title>Order Page - Lijon Top Up</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      padding: 20px;
+      background-color: #f2f2f2;
+      margin: 0;
+      padding: 0;
     }
-    .form-box {
-      max-width: 400px;
-      margin: auto;
+
+    .container {
+      max-width: 600px;
+      margin: 50px auto;
+      background-color: #fff;
       padding: 20px;
-      border: 2px solid #ddd;
       border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     }
-    input, select, button {
+
+    h2 {
+      text-align: center;
+      color: #333;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      color: #555;
+    }
+
+    input, select {
       width: 100%;
       padding: 10px;
-      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
     }
-    .error {
-      color: red;
-      font-size: 0.9em;
+
+    button {
+      width: 100%;
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    /* Responsive design */
+    @media (max-width: 600px) {
+      .container {
+        width: 90%;
+        padding: 10px;
+      }
+
+      input, select, button {
+        font-size: 16px;
+        width: 100%;
+      }
     }
   </style>
 </head>
 <body>
 
-  <div class="form-box">
-    <h2>Submit Your Order</h2>
+  <div class="container">
+    <h2>Order Form</h2>
     <form id="orderForm">
-      <label>Player ID:</label>
-      <input type="text" id="playerId" placeholder="Enter Player ID" />
-      <div class="error" id="errorPlayerId"></div>
+      <div class="form-group">
+        <label for="playerId">Player ID:</label>
+        <input type="text" id="playerId" name="playerId" required>
+      </div>
 
-      <label>Your Name:</label>
-      <input type="text" id="name" placeholder="Enter your name" />
-      <div class="error" id="errorName"></div>
+      <div class="form-group">
+        <label for="paymentMethod">Payment Method:</label>
+        <select id="paymentMethod" name="paymentMethod" required>
+          <option value="">Select Method</option>
+          <option value="Bkash">Bkash</option>
+          <option value="Nagad">Nagad</option>
+          <option value="Rocket">Rocket</option>
+        </select>
+      </div>
 
-      <label>Payment Method:</label>
-      <select id="payment">
-        <option value="">Select Payment Method</option>
-        <option>bKash</option>
-        <option>Nagad</option>
-        <option>Rocket</option>
-      </select>
-      <div class="error" id="errorPayment"></div>
+      <div class="form-group">
+        <label for="transactionId">Transaction ID:</label>
+        <input type="text" id="transactionId" name="transactionId" required>
+      </div>
+
+      <div class="form-group">
+        <label for="amount">Amount:</label>
+        <input type="number" id="amount" name="amount" required>
+      </div>
 
       <button type="submit">Submit Order</button>
     </form>
@@ -94,43 +108,22 @@
 
   <script>
     const form = document.getElementById("orderForm");
-
-    form.addEventListener("submit", function (e) {
+    form.addEventListener("submit", function(e) {
       e.preventDefault();
+      
+      const playerId = document.getElementById("playerId").value;
+      const paymentMethod = document.getElementById("paymentMethod").value;
+      const transactionId = document.getElementById("transactionId").value;
+      const amount = document.getElementById("amount").value;
 
-      // Clear previous errors
-      document.getElementById("errorPlayerId").textContent = "";
-      document.getElementById("errorName").textContent = "";
-      document.getElementById("errorPayment").textContent = "";
-
-      let isValid = true;
-
-      const playerId = document.getElementById("playerId").value.trim();
-      const name = document.getElementById("name").value.trim();
-      const payment = document.getElementById("payment").value;
-
-      if (playerId === "") {
-        document.getElementById("errorPlayerId").textContent = "Player ID is required.";
-        isValid = false;
+      if (!playerId || !paymentMethod || !transactionId || !amount) {
+        alert("Please fill in all the fields.");
+        return;
       }
 
-      if (name === "") {
-        document.getElementById("errorName").textContent = "Name is required.";
-        isValid = false;
-      }
-
-      if (payment === "") {
-        document.getElementById("errorPayment").textContent = "Please select a payment method.";
-        isValid = false;
-      }
-
-      if (isValid) {
-        const orderId = Math.floor(100000 + Math.random() * 900000);
-        const time = new Date().toLocaleString();
-
-        // Redirect to success page with parameters
-        window.location.href = `success.html?order=${orderId}&playerId=${encodeURIComponent(playerId)}&name=${encodeURIComponent(name)}&payment=${encodeURIComponent(payment)}&time=${encodeURIComponent(time)}&status=Pending`;
-      }
+      const orderId = Math.floor(100000 + Math.random() * 900000);
+      const query = `?order=${orderId}&playerId=${playerId}&method=${paymentMethod}&txn=${transactionId}&amount=${amount}`;
+      window.location.href = "success.html" + query;
     });
   </script>
 
