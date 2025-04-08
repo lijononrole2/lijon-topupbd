@@ -2,70 +2,122 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Order Success</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Order Details</title>
   <style>
     body {
-      background-color: #e8f5e9;
-      font-family: Arial, sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-    }
-
-    .success-box {
-      background-color: white;
-      padding: 30px;
-      border-radius: 15px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      width: 300px;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f2f2f2;
+      padding: 20px;
       text-align: center;
     }
-
+    .order-box {
+      background: #fff;
+      max-width: 500px;
+      margin: auto;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    }
     h2 {
-      color: green;
+      color: #4CAF50;
       margin-bottom: 20px;
     }
-
-    .info {
+    label {
+      display: block;
       text-align: left;
-      margin-top: 10px;
+      margin-bottom: 5px;
+      font-weight: bold;
     }
-
-    .info p {
-      margin: 8px 0;
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+    .summary {
+      background: #e8fce9;
+      padding: 10px;
+      margin-bottom: 20px;
+      border-radius: 6px;
+      font-weight: bold;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      border: none;
+      color: white;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #45a049;
     }
   </style>
 </head>
 <body>
 
-  <div class="success-box">
-    <h2>Order Successful!</h2>
-    <div class="info">
-      <p><strong>Order ID:</strong> <span id="order-id"></span></p>
-      <p><strong>Player ID:</strong> <span id="player-id"></span></p>
-      <p><strong>Time:</strong> <span id="order-time"></span></p>
-      <p><strong>Status:</strong> Pending</p>
+  <div class="order-box">
+    <h2>Confirm Your Order</h2>
+
+    <div class="summary">
+      <div>Diamond: <span id="diamondDisplay"></span></div>
+      <div>Price: <span id="priceDisplay"></span></div>
     </div>
+
+    <form id="orderForm">
+      <label for="playerId">Player ID</label>
+      <input type="text" id="playerId" name="playerId" required>
+
+      <label for="name">Your Name</label>
+      <input type="text" id="name" name="name" required>
+
+      <label for="payment">Payment Method</label>
+      <select id="payment" name="payment" required>
+        <option value="">Select Payment</option>
+        <option value="bKash">bKash</option>
+        <option value="Nagad">Nagad</option>
+        <option value="Rocket">Rocket</option>
+        <option value="Upay">Upay</option>
+      </select>
+
+      <button type="submit">Submit Order</button>
+    </form>
   </div>
 
   <script>
-    // URL থেকে ডেটা নেয়া
-    const params = new URLSearchParams(window.location.search);
-    const orderId = params.get('order');
-    const playerId = document.referrer.includes('uid=') ? 
-                     new URLSearchParams(document.referrer.split('?')[1]).get('uid') : '';
+    // Show diamond info from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const diamonds = urlParams.get('diamonds');
+    const price = urlParams.get('price');
 
-    // এখন সময় দেখানো
-    const now = new Date();
-    const timeString = now.toLocaleString();
+    document.getElementById('diamondDisplay').textContent = diamonds + ' Diamonds';
+    document.getElementById('priceDisplay').textContent = price;
 
-    // HTML-এ বসানো
-    document.getElementById('order-id').textContent = orderId || 'N/A';
-    document.getElementById('player-id').textContent = playerId || 'N/A';
-    document.getElementById('order-time').textContent = timeString;
+    // Form submit
+    document.getElementById('orderForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const playerId = document.getElementById('playerId').value;
+      const name = document.getElementById('name').value;
+      const payment = document.getElementById('payment').value;
+
+      const orderId = Math.floor(100000 + Math.random() * 900000);
+      const date = new Date().toLocaleString();
+
+      const params = new URLSearchParams();
+      params.append('order', orderId);
+      params.append('playerId', playerId);
+      params.append('name', name);
+      params.append('payment', payment);
+      params.append('diamonds', diamonds);
+      params.append('price', price);
+      params.append('date', date);
+
+      window.location.href = 'success.html?' + params.toString();
+    });
   </script>
 
 </body>
