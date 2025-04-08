@@ -1,56 +1,116 @@
+<!-- order.html -->
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bn">
 <head>
   <meta charset="UTF-8">
-  <title>Place Order</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Order Form - Lijon Top Up</title>
   <style>
-    body { font-family: Arial; padding: 20px; }
-    input, select { display: block; margin: 10px 0; padding: 8px; width: 100%; max-width: 400px; }
-    button { padding: 10px 20px; }
+    body {
+      font-family: Arial;
+      padding: 20px;
+      background-color: #f0f8ff;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 8px;
+    }
+    .note {
+      background-color: yellow;
+      padding: 10px;
+      margin-top: 10px;
+      border: 1px solid #ccc;
+      font-weight: bold;
+    }
+    .contact-box {
+      background: #eee;
+      padding: 10px;
+      margin-bottom: 15px;
+      border-left: 4px solid #007bff;
+    }
+    button {
+      padding: 10px 20px;
+      background: #28a745;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
-  <h2>Free Fire Diamond Top-Up</h2>
+
+  <h2>Diamond Order Form</h2>
+
+  <div class="contact-box">
+    Seller Contact Number: <strong>Bkash || Nagad
+   </br> → 01611335109 ←</strong><br>
+    (এই নাম্বারে টাকা পাঠান)
+  </div>
+
   <form id="orderForm">
-    <label>Player ID: <input type="text" id="playerId" required></label>
-    <label>Name: <input type="text" id="name" required></label>
-    <label>Payment Method:
-      <select id="paymentMethod" required>
+    <div class="form-group">
+      <label for="playerId">Player ID</label>
+      <input type="text" id="playerId" name="playerId" required>
+    </div>
+
+    <div class="form-group">
+      <label for="name">Your Name</label>
+      <input type="text" id="name" name="name" required>
+    </div>
+
+    <div class="form-group">
+      <label for="paymentMethod">Payment Method</label>
+      <select id="paymentMethod" name="paymentMethod" required>
         <option value="">Select</option>
-        <option value="bKash">bKash</option>
-        <option value="Nagad">Nagad</option>
-        <option value="Rocket">Rocket</option>
-      
+        <option value="bkash">bKash</option>
+        <option value="nagad">Nagad</option>
+        
       </select>
-    </label>
-    <button type="submit">Place Order</button>
+    </div>
+
+    <div class="form-group">
+      <label for="screenshot">Screenshot Upload (optional)</label>
+      <input type="file" id="screenshot" name="screenshot" accept="image/*">
+    </div>
+
+    <div class="form-group">
+      <label for="transactionId">OR Transaction ID</label>
+      <input type="text" id="transactionId" name="transactionId">
+    </div>
+
+    <div class="note">Screenshot অথবা Transaction id যেকোনো একটা দিলেই হবে||</div>
+
+   </br>
+    <button type="submit">Submit Order</button>
   </form>
 
   <script>
-    const urlParams = new URLSearchParams(window.location.search);
-    const packageId = urlParams.get('package');
-
-    document.getElementById('orderForm').addEventListener('submit', function (e) {
+    document.getElementById("orderForm").addEventListener("submit", function(e) {
       e.preventDefault();
-      const playerId = document.getElementById('playerId').value;
-      const name = document.getElementById('name').value;
-      const paymentMethod = document.getElementById('paymentMethod').value;
 
-      const orderId = Math.floor(100000 + Math.random() * 900000); // Random 6-digit order ID
-      const orderTime = new Date().toLocaleString();
+      const playerId = document.getElementById("playerId").value;
+      const name = document.getElementById("name").value;
+      const paymentMethod = document.getElementById("paymentMethod").value;
+      const transactionId = document.getElementById("transactionId").value;
+      const screenshot = document.getElementById("screenshot").value;
 
-      const query = new URLSearchParams({
-        orderId,
-        playerId,
-        name,
-        paymentMethod,
-        orderTime,
-        status: 'Pending',
-        package: packageId || ''
-      }).toString();
+      if (!screenshot && !transactionId) {
+        alert("Screenshot অথবা Transaction id যেকোনো একটা দিতে হবে!");
+        return;
+      }
 
-      window.location.href = `success.html?${query}`;
+      const orderId = Math.floor(100000 + Math.random() * 900000);
+      const url = `success.html?order=${orderId}&playerId=${playerId}&name=${name}&payment=${paymentMethod}`;
+      window.location.href = url;
     });
   </script>
+
 </body>
 </html>
