@@ -2,54 +2,69 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Order Success - Lijon Top Up</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Order Success</title>
   <style>
     body {
-      font-family: 'Poppins', sans-serif;
-      background: #e6ffe6;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #e6ffee;
+      padding: 20px;
       text-align: center;
-      padding: 60px 20px;
     }
-    .box {
-      background: white;
+    .success-box {
+      background: #fff;
       max-width: 500px;
       margin: auto;
       padding: 30px;
-      border-radius: 15px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
     }
-    h1 {
-      color: green;
-      font-size: 32px;
+    h2 {
+      color: #4CAF50;
+      margin-bottom: 20px;
     }
-    p {
-      font-size: 18px;
-      color: #333;
-      margin: 15px 0;
-    }
-    .btn {
-      display: inline-block;
+    .info {
+      text-align: left;
       margin-top: 20px;
-      padding: 12px 25px;
-      background: #007bff;
-      color: white;
-      border-radius: 8px;
-      text-decoration: none;
     }
-    .btn:hover {
-      background: #0056b3;
+    .info div {
+      margin: 10px 0;
+      font-size: 16px;
+    }
+    .info div span {
+      font-weight: bold;
     }
   </style>
 </head>
 <body>
 
-  <div class="box">
-    <h1>অর্ডার সফল হয়েছে!</h1>
-    <p>আপনার টপ আপ রিকুয়েস্টটি আমরা পেয়ে গেছি।</p>
-    <p><strong>অর্ডার আইডি:</strong> #LIJON1234</p>
-    <p>পেমেন্ট কনফার্ম হলে ডায়মন্ড পাঠানো হবে। ধন্যবাদ!</p>
-    <a class="btn" href="index.html">হোমপেজে ফিরে যান</a>
+  <div class="success-box">
+    <h2>Order Success!</h2>
+    <p>Thank you for your purchase.</p>
+
+    <div class="info">
+      <div><span>Order ID:</span> <span id="orderId"></span></div>
+      <div><span>Player ID:</span> <span id="playerId"></span></div>
+      <div><span>Name:</span> <span id="name"></span></div>
+      <div><span>Diamond:</span> <span id="diamonds"></span></div>
+      <div><span>Price:</span> <span id="price"></span></div>
+      <div><span>Payment Method:</span> <span id="payment"></span></div>
+      <div><span>Time:</span> <span id="date"></span></div>
+      <div><span>Status:</span> <span style="color: green;">Pending</span></div>
+    </div>
   </div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+
+    document.getElementById('orderId').textContent = params.get('order');
+    document.getElementById('playerId').textContent = params.get('playerId');
+    document.getElementById('name').textContent = params.get('name');
+    document.getElementById('diamonds').textContent = params.get('diamonds') + ' Diamonds';
+    document.getElementById('price').textContent = params.get('price');
+    document.getElementById('payment').textContent = params.get('payment');
+    document.getElementById('date').textContent = params.get('date');
+  </script>
 
 </body>
 </html>
