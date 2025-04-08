@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Lijon Top Up</title>
   <script src="https://accounts.google.com/gsi/client" async defer></script>
   <style>
@@ -100,10 +100,9 @@
     <h1>Lijon Top Up</h1>
     <div class="login-area" id="loginSection">
       <div id="g_id_onload"
-           data-client_id="YOUR_CLIENT_ID"
+           data-client_id="102433301522-v0ip1uhrue3mk80410joovha5ft8m7u2.apps.googleusercontent.com"
            data-callback="handleCredentialResponse"
-           data-auto_prompt="false">
-      </div>
+           data-auto_prompt="false"></div>
       <div class="g_id_signin" data-type="standard"></div>
     </div>
   </header>
@@ -111,7 +110,7 @@
   <section class="banner">
     <h2>Uid Top Up</h2>
     <div class="menu-buttons">
-      <button>Udi Top</button>
+      <button>Uid Top</button>
       <button>Unipin</button>
       <button>Monthly</button>
     </div>
@@ -152,7 +151,7 @@
       const base64Url = token.split('.')[1];
       const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
       const jsonPayload = decodeURIComponent(atob(base64).split('').map(c => {
-          return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
       }).join(''));
       return JSON.parse(jsonPayload);
     }
