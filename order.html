@@ -64,6 +64,25 @@
     .next-btn:hover {
       background: #00994d;
     }
+
+    .contact-link {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .contact-link button {
+      background: #ff6600;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .contact-link button:hover {
+      background: #cc5200;
+    }
   </style>
 </head>
 <body>
@@ -75,20 +94,19 @@
       <label for="uid">Free Fire UID:</label>
       <input type="text" id="uid" name="uid" required />
 
-      <label for="nickname">Nickname:</label>
-      <input type="text" id="nickname" name="nickname" required />
-
-      <label for="phone">Your Phone Number:</label>
-      <input type="text" id="phone" name="phone" required />
-
-      <label>Seller Number:</label>
-      <input type="text" value="01611335109" readonly />
-
       <button type="submit" class="next-btn">Next</button>
     </form>
+
+    <div class="contact-link">
+      <button onclick="goToContact()">Contact</button>
+    </div>
   </div>
 
   <script>
+    function goToContact() {
+      window.location.href = "contact.html";
+    }
+
     // Block access if not logged in
     const user = JSON.parse(localStorage.getItem("user"));
     if (!user) {
@@ -104,19 +122,17 @@
     // Display package
     document.getElementById("packageDetails").innerText = `${packageName} - ${price} TK`;
 
-    // Handle form
+    // Handle form submission
     document.getElementById("orderForm").addEventListener("submit", function(e) {
       e.preventDefault();
       const uid = document.getElementById("uid").value.trim();
-      const nickname = document.getElementById("nickname").value.trim();
-      const phone = document.getElementById("phone").value.trim();
 
-      if (!uid || !nickname || !phone) {
-        alert("Please fill all the fields.");
+      if (!uid) {
+        alert("Please enter your UID.");
         return;
       }
 
-      const query = `package=${encodeURIComponent(packageName)}&price=${price}&uid=${encodeURIComponent(uid)}&nickname=${encodeURIComponent(nickname)}&phone=${encodeURIComponent(phone)}`;
+      const query = `package=${encodeURIComponent(packageName)}&price=${price}&uid=${encodeURIComponent(uid)}`;
       window.location.href = `payment.html?${query}`;
     });
   </script>
