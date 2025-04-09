@@ -105,14 +105,7 @@
         </tr>
       </thead>
       <tbody id="ordersBody">
-        <!-- Sample row -->
-        <tr>
-          <td>100 Diamonds</td>
-          <td>123456789</td>
-          <td>bKash</td>
-          <td>85৳</td>
-          <td>TX123456</td>
-        </tr>
+        <!-- Orders will load here -->
       </tbody>
     </table>
     <button class="back-btn" onclick="window.location.href='index.html'">Back to Home</button>
@@ -131,6 +124,44 @@
       google.accounts.id.prompt();
     };
 
+    function parseJwt(token) {
+      const base64Url = token.split('.')[1];
+      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+      }).join(''));
+      return JSON.parse(jsonPayload);
+    }
+
+    function logout() {
+      location.reload();
+    }
+
+    function loadOrdersFromLocalStorage() {
+      const ordersBody = document.getElementById("ordersBody");
+      ordersBody.innerHTML = "";
+
+      const orders = JSON.parse(localStorage.getItem("orders")) || [];
+
+      if (orders.length === 0) {
+        ordersBody.innerHTML = `<tr><td colspan="5">No orders found</td></tr>`;
+        return;
+      }
+
+      orders.forEach(order => {
+        const row = `
+          <tr>
+            <td>${order.package}</td>
+            <td>${order.uid}</td>
+            <td>${order.paymentMethod}</td>
+            <td>${order.amount}</td>
+            <td>${order.transactionId}</td>
+          </tr>
+        `;
+        ordersBody.innerHTML += row;
+      });
+    }
+
     function handleCredentialResponse(response) {
       const data = parseJwt(response.credential);
       const email = data.email;
@@ -146,23 +177,10 @@
 
       if (email === adminEmail) {
         document.getElementById("adminContent").style.display = "block";
+        loadOrdersFromLocalStorage();
       } else {
         document.getElementById("accessDenied").style.display = "block";
       }
-    }
-
-    function parseJwt(token) {
-      const base64Url = token.split('.')[1];
-      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-      const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
-        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-      }).join(''));
-
-      return JSON.parse(jsonPayload);
-    }
-
-    function logout() {
-      location.reload();
     }
   </script>
 </body>
