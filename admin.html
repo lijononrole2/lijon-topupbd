@@ -77,6 +77,13 @@
       border-radius: 6px;
       cursor: pointer;
     }
+
+    #accessDenied {
+      text-align: center;
+      color: red;
+      margin-top: 50px;
+      font-size: 20px;
+    }
   </style>
 </head>
 <body>
@@ -85,102 +92,78 @@
     <div class="user-info" id="adminInfo"></div>
   </header>
 
-  <div class="container">
+  <div class="container" id="adminContent" style="display: none;">
     <h3>All Orders</h3>
     <table id="ordersTable">
       <thead>
         <tr>
           <th>Package</th>
-          <th>Price</th>
           <th>UID</th>
-          <th>Method</th>
+          <th>Payment Method</th>
+          <th>Amount</th>
           <th>Transaction ID</th>
         </tr>
       </thead>
-      <tbody>
-        <!-- Orders will load here -->
+      <tbody id="ordersBody">
+        <!-- Sample row -->
+        <tr>
+          <td>100 Diamonds</td>
+          <td>123456789</td>
+          <td>bKash</td>
+          <td>85৳</td>
+          <td>TX123456</td>
+        </tr>
       </tbody>
     </table>
-
     <button class="back-btn" onclick="window.location.href='index.html'">Back to Home</button>
   </div>
 
+  <div id="accessDenied" style="display: none;">Access Denied: You are not an admin.</div>
+
   <script>
-    const ADMIN_EMAIL = "mdshakillijon255@gmail.com";
+    const adminEmail = "mdshakillijon255@gmail.com";
+
+    window.onload = function () {
+      google.accounts.id.initialize({
+        client_id: "YOUR_GOOGLE_CLIENT_ID",
+        callback: handleCredentialResponse
+      });
+      google.accounts.id.prompt();
+    };
 
     function handleCredentialResponse(response) {
       const data = parseJwt(response.credential);
-      localStorage.setItem("user", JSON.stringify(data));
-      checkAdminAccess();
+      const email = data.email;
+      const name = data.name;
+      const picture = data.picture;
+
+      const adminInfo = document.getElementById("adminInfo");
+      adminInfo.innerHTML = `
+        <img src="${picture}" alt="User">
+        <span>${name}</span>
+        <button class="logout-btn" onclick="logout()">Logout</button>
+      `;
+
+      if (email === adminEmail) {
+        document.getElementById("adminContent").style.display = "block";
+      } else {
+        document.getElementById("accessDenied").style.display = "block";
+      }
     }
 
     function parseJwt(token) {
       const base64Url = token.split('.')[1];
       const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-      const jsonPayload = decodeURIComponent(atob(base64).split('').map(c => {
+      const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
         return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
       }).join(''));
+
       return JSON.parse(jsonPayload);
     }
 
-    function checkAdminAccess() {
-      const user = JSON.parse(localStorage.getItem("user"));
-      if (!user || user.email !== ADMIN_EMAIL) {
-        alert("Access Denied. Admin Only.");
-        window.location.href = "index.html";
-        return;
-      }
-
-      document.getElementById("adminInfo").innerHTML = `
-        <img src="${user.picture}" alt="Profile">
-        <span>${user.name}</span>
-        <button class="logout-btn" onclick="logout()">Logout</button>
-      `;
-
-      loadOrders();
-    }
-
     function logout() {
-      localStorage.removeItem("user");
-      window.location.href = "index.html";
+      location.reload();
     }
-
-    function loadOrders() {
-      const tableBody = document.querySelector("#ordersTable tbody");
-      const urlParams = new URLSearchParams(window.location.search);
-      const order = {
-        package: urlParams.get("package"),
-        price: urlParams.get("price"),
-        uid: urlParams.get("uid"),
-        txid: urlParams.get("txid"),
-        method: urlParams.get("method")
-      };
-
-      if (order.package && order.txid) {
-        let orders = JSON.parse(localStorage.getItem("orders") || "[]");
-        orders.push(order);
-        localStorage.setItem("orders", JSON.stringify(orders));
-      }
-
-      const savedOrders = JSON.parse(localStorage.getItem("orders") || "[]");
-
-      tableBody.innerHTML = savedOrders.map(o => `
-        <tr>
-          <td>${o.package}</td>
-          <td>${o.price}</td>
-          <td>${o.uid}</td>
-          <td>${o.method}</td>
-          <td>${o.txid}</td>
-        </tr>
-      `).join('');
-    }
-
-    window.onload = checkAdminAccess;
   </script>
-
-  <div id="g_id_onload"
-       data-client_id="38728064426-5qin12i5a2bk2da9mg73ojkjash3mfmu.apps.googleusercontent.com"
-       data-callback="handleCredentialResponse"
-       data-auto_prompt="false"></div>
 </body>
 </html>
