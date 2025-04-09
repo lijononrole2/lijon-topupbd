@@ -1,3 +1,4 @@
+<!-- order.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,68 +9,47 @@
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background: url('https://i.ibb.co/5Y0Fdzf/freefire-bg.jpg') no-repeat center center fixed;
-      background-size: cover;
-      color: #000;
+      background: #f5f5f5;
     }
-
     .container {
       max-width: 500px;
       margin: 50px auto;
-      background: rgba(255, 255, 255, 0.95);
+      background: #fff;
       padding: 30px;
       border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
-
     h2 {
       text-align: center;
-      margin-bottom: 10px;
-    }
-
-    .package-info {
-      text-align: center;
-      font-size: 18px;
       margin-bottom: 20px;
-      background: #eaffea;
-      padding: 10px;
-      border: 2px solid #00cc66;
-      border-radius: 10px;
     }
-
     label {
       display: block;
-      margin: 10px 0 5px;
+      margin-top: 15px;
       font-weight: bold;
     }
-
     input {
       width: 100%;
       padding: 10px;
+      margin-top: 5px;
       border-radius: 6px;
-      border: 1px solid #aaa;
+      border: 1px solid #ccc;
     }
-
-    .next-btn {
+    .submit-btn {
       margin-top: 20px;
       padding: 12px;
       width: 100%;
-      background: #00cc66;
+      background: #28a745;
       color: white;
       border: none;
       font-size: 16px;
       border-radius: 8px;
       cursor: pointer;
     }
-
-    .next-btn:hover {
-      background: #00994d;
-    }
-
     .contact-link {
       text-align: center;
       margin-top: 20px;
     }
-
     .contact-link button {
       background: #ff6600;
       color: white;
@@ -79,67 +59,33 @@
       font-size: 14px;
       cursor: pointer;
     }
-
-    .contact-link button:hover {
-      background: #cc5200;
-    }
   </style>
 </head>
 <body>
   <div class="container">
-    <h2>Confirm Your Order</h2>
-    <div class="package-info" id="packageDetails">Loading package...</div>
-
+    <h2>FREE FIRE UID</h2>
     <form id="orderForm">
-      <label for="uid">Free Fire UID:</label>
-      <input type="text" id="uid" name="uid" required />
-
-      <button type="submit" class="next-btn">Next</button>
+      <label for="uid">Enter Your UID</label>
+      <input type="text" id="uid" required />
+      <button type="submit" class="submit-btn">Next to Payment</button>
     </form>
 
     <div class="contact-link">
-      <button onclick="goToContact()">Contact</button>
+      <button onclick="window.location.href='contact.html'">Contact</button>
     </div>
   </div>
 
   <script>
-    function goToContact() {
-      window.location.href = "contact.html";
-    }
+    const params = new URLSearchParams(window.location.search);
+    const packageName = params.get("package");
+    const price = params.get("price");
 
-    // Check login
-    const user = JSON.parse(localStorage.getItem("user"));
-    if (!user) {
-      alert("Please sign in from the homepage first.");
-      window.location.href = "index.html";
-    }
-
-    // Get package info from URL or localStorage
-    let urlParams = new URLSearchParams(window.location.search);
-    let packageName = urlParams.get("package");
-    let price = urlParams.get("price");
-
-    if (!packageName || !price) {
-      const orderInfo = JSON.parse(localStorage.getItem("orderInfo"));
-      if (orderInfo) {
-        packageName = orderInfo.packageName;
-        price = orderInfo.price;
-      } else {
-        alert("Missing order information.");
-        window.location.href = "index.html";
-      }
-    }
-
-    // Show package
-    document.getElementById("packageDetails").innerText = `${packageName} - ${price} TK`;
-
-    // Handle form
     document.getElementById("orderForm").addEventListener("submit", function(e) {
       e.preventDefault();
       const uid = document.getElementById("uid").value.trim();
 
-      if (!uid) {
-        alert("Please enter your UID.");
+      if (!uid.match(/^\d{6,}$/)) {
+        alert("Please enter a valid Free Fire UID (at least 6 digits).");
         return;
       }
 
