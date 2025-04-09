@@ -1,4 +1,3 @@
-<!-- order.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -89,8 +88,28 @@
         return;
       }
 
-      const query = `package=${encodeURIComponent(packageName)}&price=${price}&uid=${encodeURIComponent(uid)}`;
-      window.location.href = `payment.html?${query}`;
+      // পাঠাও Google Sheet এ
+      fetch("https://script.google.com/macros/s/AKfycbzSakERI8T--w3rRzTuyEhW4ucK9zril4kzrx8662Qn2cfEqFg9vCLPWwAriT-Rok2NJQ/exec", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          package: packageName,
+          price: price,
+          uid: uid
+        })
+      })
+      .then(res => res.text())
+      .then(data => {
+        // সফলভাবে গেলে payment.html এ পাঠাও
+        const query = `package=${encodeURIComponent(packageName)}&price=${price}&uid=${encodeURIComponent(uid)}`;
+        window.location.href = `payment.html?${query}`;
+      })
+      .catch(err => {
+        alert("Something went wrong. Please try again.");
+        console.error(err);
+      });
     });
   </script>
 </body>
