@@ -1,3 +1,4 @@
+<!-- success.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,42 +8,42 @@
   <style>
     body {
       margin: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: url('https://i.ibb.co/5Y0Fdzf/freefire-bg.jpg') no-repeat center center fixed;
-      background-size: cover;
-      color: white;
+      font-family: Arial, sans-serif;
+      background: #e6ffe6;
     }
-
     .container {
       max-width: 500px;
-      margin: 60px auto;
-      background: rgba(0, 0, 0, 0.8);
+      margin: 50px auto;
+      background: #fff;
       padding: 30px;
-      border-radius: 15px;
-      box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
       text-align: center;
     }
-
     h2 {
-      color: #00ff99;
+      color: #28a745;
       margin-bottom: 20px;
     }
-
-    .details {
-      text-align: left;
-      margin-top: 20px;
+    .info {
+      margin-top: 10px;
       font-size: 16px;
-      line-height: 1.6;
     }
-
-    .details p {
-      margin: 10px 0;
+    .info span {
+      font-weight: bold;
     }
-
-    .contact-link {
+    .back-btn {
       margin-top: 30px;
+      padding: 12px 20px;
+      background: #007bff;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
     }
-
+    .contact-link {
+      margin-top: 20px;
+    }
     .contact-link button {
       background: #ff6600;
       color: white;
@@ -52,20 +53,16 @@
       font-size: 14px;
       cursor: pointer;
     }
-
-    .contact-link button:hover {
-      background: #cc5200;
-    }
   </style>
 </head>
 <body>
   <div class="container">
-    <h2>অর্ডার সফল হয়েছে!</h2>
-    <p>ধন্যবাদ! আপনার টপ-আপ রিকুয়েস্ট আমরা পেয়েছি।</p>
+    <h2>Order Successful!</h2>
+    <p class="info">Package: <span id="package"></span></p>
+    <p class="info">Price: <span id="price"></span> ৳</p>
+    <p class="info">UID: <span id="uid"></span></p>
 
-    <div class="details" id="orderDetails">
-      <!-- অর্ডার ডিটেইলস এখানে আসবে -->
-    </div>
+    <button class="back-btn" onclick="window.location.href='index.html'">Back to Home</button>
 
     <div class="contact-link">
       <button onclick="window.location.href='contact.html'">Contact</button>
@@ -74,21 +71,9 @@
 
   <script>
     const params = new URLSearchParams(window.location.search);
-    const packageName = params.get("package");
-    const price = params.get("price");
-    const uid = params.get("uid");
-    const txid = params.get("txid");
-    const method = params.get("method");
-
-    const detailsBox = document.getElementById("orderDetails");
-
-    detailsBox.innerHTML = `
-      <p><strong>UID:</strong> ${uid}</p>
-      <p><strong>Package:</strong> ${packageName}</p>
-      <p><strong>Price:</strong> ${price} TK</p>
-      <p><strong>Payment Method:</strong> ${method}</p>
-      <p><strong>Transaction ID:</strong> ${txid}</p>
-    `;
+    document.getElementById("package").textContent = params.get("package") || "N/A";
+    document.getElementById("price").textContent = params.get("price") || "N/A";
+    document.getElementById("uid").textContent = params.get("uid") || "N/A";
   </script>
 </body>
 </html>
