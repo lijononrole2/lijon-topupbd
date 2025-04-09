@@ -3,96 +3,92 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Order Success - Lijon Top Up</title>
+  <title>Success - Lijon Top Up</title>
   <style>
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background: url('https://i.ibb.co/5Y0Fdzf/freefire-bg.jpg') no-repeat center center fixed;
       background-size: cover;
-      color: #000;
+      color: white;
     }
 
     .container {
       max-width: 500px;
-      margin: 50px auto;
-      background: rgba(255, 255, 255, 0.95);
+      margin: 60px auto;
+      background: rgba(0, 0, 0, 0.8);
       padding: 30px;
-      border-radius: 12px;
+      border-radius: 15px;
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
       text-align: center;
     }
 
     h2 {
-      color: green;
-      margin-bottom: 10px;
+      color: #00ff99;
+      margin-bottom: 20px;
     }
 
-    .summary {
+    .details {
       text-align: left;
-      background: #e6f7ff;
-      padding: 15px;
-      border-radius: 10px;
       margin-top: 20px;
-      border: 2px solid #66ccff;
       font-size: 16px;
-      font-weight: bold;
-      white-space: pre-line;
+      line-height: 1.6;
     }
 
-    .success-note {
-      margin-top: 15px;
-      padding: 12px;
-      background: #d4edda;
-      border: 1px solid #28a745;
-      border-radius: 8px;
-      color: #155724;
-      font-weight: bold;
+    .details p {
+      margin: 10px 0;
     }
 
-    .back-btn {
-      margin-top: 25px;
-      padding: 12px 20px;
-      font-size: 16px;
-      background: #007bff;
+    .contact-link {
+      margin-top: 30px;
+    }
+
+    .contact-link button {
+      background: #ff6600;
       color: white;
       border: none;
+      padding: 10px 20px;
       border-radius: 8px;
+      font-size: 14px;
       cursor: pointer;
-      text-decoration: none;
-      display: inline-block;
     }
 
-    .back-btn:hover {
-      background: #0056b3;
+    .contact-link button:hover {
+      background: #cc5200;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h2>অর্ডার সফলভাবে সম্পন্ন হয়েছে!</h2>
+    <h2>অর্ডার সফল হয়েছে!</h2>
+    <p>ধন্যবাদ! আপনার টপ-আপ রিকুয়েস্ট আমরা পেয়েছি।</p>
 
-    <div class="success-note">আপনার অর্ডার আমরা পেয়েছি, কিছুক্ষণের মধ্যে ডায়মন্ড পাঠানো হবে।</div>
+    <div class="details" id="orderDetails">
+      <!-- অর্ডার ডিটেইলস এখানে আসবে -->
+    </div>
 
-    <div class="summary" id="orderSummary">Loading summary...</div>
-
-    <a href="index.html" class="back-btn">Back to Home</a>
+    <div class="contact-link">
+      <button onclick="window.location.href='contact.html'">Contact</button>
+    </div>
   </div>
 
   <script>
     const params = new URLSearchParams(window.location.search);
-    const uid = params.get("uid");
-    const nickname = params.get("nickname");
-    const phone = params.get("phone");
-    const pack = params.get("package");
+    const packageName = params.get("package");
     const price = params.get("price");
-    const trxid = params.get("trxid");
+    const uid = params.get("uid");
+    const txid = params.get("txid");
+    const method = params.get("method");
 
-    if (!uid || !nickname || !phone || !pack || !price || !trxid) {
-      document.getElementById("orderSummary").innerText = "Missing information. Please try again.";
-    } else {
-      document.getElementById("orderSummary").innerText =
-        `Name: ${nickname}\nUID: ${uid}\nPhone: ${phone}\nPackage: ${pack}\nPrice: ${price} TK\nPayment Info: ${trxid}`;
-    }
+    const detailsBox = document.getElementById("orderDetails");
+
+    detailsBox.innerHTML = `
+      <p><strong>UID:</strong> ${uid}</p>
+      <p><strong>Package:</strong> ${packageName}</p>
+      <p><strong>Price:</strong> ${price} TK</p>
+      <p><strong>Payment Method:</strong> ${method}</p>
+      <p><strong>Transaction ID:</strong> ${txid}</p>
+    `;
   </script>
 </body>
 </html>
