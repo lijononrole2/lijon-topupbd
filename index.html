@@ -181,19 +181,16 @@
         alert("Please sign in first to continue.");
         return;
       }
-      window.location.href = `order.html?package=${encodeURIComponent(name)}&price=${price}`;
+
+      const orderInfo = {
+        packageName: name,
+        price: price
+      };
+      localStorage.setItem("orderInfo", JSON.stringify(orderInfo));
+      window.location.href = "order.html";
     }
 
     window.onload = updateLoginUI;
   </script>
-  <script>
-  // ... existing functions
-
-  function goToContact() {
-    window.location.href = "contact.html";
-  }
-
-  // ... existing onload function
-</script>
 </body>
 </html>
