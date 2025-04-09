@@ -107,22 +107,33 @@
       window.location.href = "contact.html";
     }
 
-    // Block access if not logged in
+    // Check login
     const user = JSON.parse(localStorage.getItem("user"));
     if (!user) {
       alert("Please sign in from the homepage first.");
       window.location.href = "index.html";
     }
 
-    // Read URL data
-    const urlParams = new URLSearchParams(window.location.search);
-    const packageName = urlParams.get("package");
-    const price = urlParams.get("price");
+    // Get package info from URL or localStorage
+    let urlParams = new URLSearchParams(window.location.search);
+    let packageName = urlParams.get("package");
+    let price = urlParams.get("price");
 
-    // Display package
+    if (!packageName || !price) {
+      const orderInfo = JSON.parse(localStorage.getItem("orderInfo"));
+      if (orderInfo) {
+        packageName = orderInfo.packageName;
+        price = orderInfo.price;
+      } else {
+        alert("Missing order information.");
+        window.location.href = "index.html";
+      }
+    }
+
+    // Show package
     document.getElementById("packageDetails").innerText = `${packageName} - ${price} TK`;
 
-    // Handle form submission
+    // Handle form
     document.getElementById("orderForm").addEventListener("submit", function(e) {
       e.preventDefault();
       const uid = document.getElementById("uid").value.trim();
