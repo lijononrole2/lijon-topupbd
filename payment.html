@@ -28,7 +28,7 @@
       margin-top: 15px;
       font-weight: bold;
     }
-    input, select {
+    input {
       width: 100%;
       padding: 10px;
       margin-top: 5px;
@@ -47,12 +47,10 @@
       cursor: pointer;
     }
     .note {
-      background: #ffffcc;
-      padding: 10px;
-      border: 1px solid #cccc00;
       margin-top: 15px;
-      border-radius: 8px;
-      font-size: 14px;
+      color: #ff0000;
+      font-weight: bold;
+      text-align: center;
     }
     .contact-link {
       text-align: center;
@@ -67,54 +65,21 @@
       font-size: 14px;
       cursor: pointer;
     }
-    .number-box {
-      background: #fff8e1;
-      border: 2px solid #ffcc00;
-      padding: 12px;
-      text-align: center;
-      border-radius: 10px;
-      margin-top: 15px;
-      position: relative;
-    }
-    .copy-btn {
-      position: absolute;
-      right: 15px;
-      top: 10px;
-      background: #ff6600;
-      color: white;
-      border: none;
-      padding: 6px 10px;
-      border-radius: 6px;
-      cursor: pointer;
-    }
   </style>
 </head>
 <body>
   <div class="container">
-    <h2>Payment Info</h2>
-
-    <div class="number-box">
-      Seller Number: <strong id="sellerNumber">01611335109</strong>
-      <button class="copy-btn" onclick="copyNumber()">Copy</button>
-    </div>
-
+    <h2>Payment Details</h2>
     <form id="paymentForm">
-      <label for="method">Payment Method</label>
-      <select id="method" required>
-        <option value="" disabled selected>Select Method</option>
-        <option value="bkash">bKash</option>
-        <option value="nagad">Nagad</option>
-      </select>
+      <label for="paymentMethod">Payment Method</label>
+      <input type="text" id="paymentMethod" placeholder="e.g. bKash / Nagad" required />
 
-      <label for="transaction">Transaction ID</label>
-      <input type="text" id="transaction" required />
+      <label for="transactionId">Transaction ID</label>
+      <input type="text" id="transactionId" placeholder="e.g. TX123456" required />
 
-      <div class="note">
-        Send Money করার পর Transaction id দিলেই হবে।<br>
-        bKash এর জন্য ১০ অক্ষরের এবং Nagad এর জন্য ৮ অক্ষরের Transaction ID দিন।
-      </div>
+      <div class="note">Screenshot অথবা Transaction ID যেকোনো একটা দিলেই হবে</div>
 
-      <button type="submit" class="submit-btn">Submit</button>
+      <button type="submit" class="submit-btn">Submit Order</button>
     </form>
 
     <div class="contact-link">
@@ -123,13 +88,6 @@
   </div>
 
   <script>
-    function copyNumber() {
-      const number = document.getElementById("sellerNumber").innerText;
-      navigator.clipboard.writeText(number).then(() => {
-        alert("Number copied: " + number);
-      });
-    }
-
     const params = new URLSearchParams(window.location.search);
     const packageName = params.get("package");
     const price = params.get("price");
@@ -137,96 +95,40 @@
 
     document.getElementById("paymentForm").addEventListener("submit", function(e) {
       e.preventDefault();
-      const transaction = document.getElementById("transaction").value.trim();
-      const method = document.getElementById("method").value;
 
-      if (!method) {
-        alert("Please select a payment method.");
+      const paymentMethod = document.getElementById("paymentMethod").value.trim();
+      const transactionId = document.getElementById("transactionId").value.trim();
+
+      if (!paymentMethod || !transactionId) {
+        alert("Please fill in all required fields.");
         return;
       }
 
-      if (method === "bkash" && !/^[A-Za-z0-9]{10}$/.test(transaction)) {
-        alert("bKash Transaction ID must be 10 characters (letters or digits).");
-        return;
-      }
+      const data = {
+        package: packageName,
+        price: price,
+        uid: uid,
+        paymentMethod: paymentMethod,
+        transactionId: transactionId
+      };
 
-      if (method === "nagad" && !/^[A-Za-z0-9]{8}$/.test(transaction)) {
-        alert("Nagad Transaction ID must be 8 characters (letters or digits).");
-        return;
-      }
+      fetch("https://script.google.com/macros/s/AKfycbzSakERI8T--w3rRzTuyEhW4ucK9zril4kzrx8662Qn2cfEqFg9vCLPWwAriT-Rok2NJQ/exec", {
+        method: "POST",
+        mode: "no-cors",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+      });
 
-      const query = `package=${encodeURIComponent(packageName)}&price=${price}&uid=${encodeURIComponent(uid)}&txid=${transaction}&method=${method}`;
-      window.location.href = `success.html?${query}`;
+      // Save to localStorage for admin panel
+      const orders = JSON.parse(localStorage.getItem("orders")) || [];
+      orders.push(data);
+      localStorage.setItem("orders", JSON.stringify(orders));
+
+      // Redirect
+      window.location.href = `success.html?package=${packageName}&price=${price}&uid=${uid}`;
     });
-  </script>
-</body>
-</html>    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <h2>Payment Details</h2>
-    <div class="info-box" id="orderInfo">Loading order details...</div>
-
-    <label>Seller Number: <h3>Bkash || Nagad Only</h3></label>
-    <div class="copy-row">
-      <input type="text" id="sellerNumber" value="01611335109"
-      readonly />
-      <button class="copy-btn" onclick="copyNumber()">Copy                 
-      </button>
-      </br> 
-    </div>
-
-    <div class="note">Screenshot অথবা Transaction id যেকোনো একটা দিলেই হবে</div>
-
-    <form id="paymentForm">
-      <label for="transactionId">Transaction ID:</label>
-      <input type="text" id="transactionId" name="transactionId" placeholder="বিকাশ / নগদ ট্রানজেকশন আইড" />
-
-      <label for="screenshot">Upload Screenshot (optional):</label>
-      <input type="file" id="screenshot" name="screenshot" accept="image/*" />
-
-      <button type="submit" class="submit-btn">Submit Payment</button>
-    </form>
-  </div>
-
-  <script>
-    const params = new URLSearchParams(window.location.search);
-    const uid = params.get("uid");
-    const nickname = params.get("nickname");
-    const phone = params.get("phone");
-    const pack = params.get("package");
-    const price = params.get("price");
-
-    if (!uid || !nickname || !phone || !pack || !price) {
-      alert("Missing order information. Please start from index page.");
-      window.location.href = "index.html";
-    }
-
-    document.getElementById("orderInfo").innerText =
-      `Package: ${pack} - ${price} TK\nUID: ${uid}\nName: ${nickname}\nPhone: ${phone}`;
-
-    document.getElementById("paymentForm").addEventListener("submit", function(e) {
-      e.preventDefault();
-      const trx = document.getElementById("transactionId").value.trim();
-      const screenshot = document.getElementById("screenshot").files.length;
-
-      if (!trx && !screenshot) {
-        alert("Screenshot অথবা Transaction ID যেকোনো একটা দিতে হবে।");
-        return;
-      }
-
-      const query = `uid=${encodeURIComponent(uid)}&nickname=${encodeURIComponent(nickname)}&phone=${encodeURIComponent(phone)}&package=${encodeURIComponent(pack)}&price=${price}&trxid=${encodeURIComponent(trx || 'screenshot_uploaded')}`;
-      window.location.href = `success.html?${query}`;
-    });
-
-    function copyNumber() {
-      const input = document.getElementById("sellerNumber");
-      input.select();
-      input.setSelectionRange(0, 99999);
-      document.execCommand("copy");
-      alert("Number copied: " + input.value);
-    }
   </script>
 </body>
 </html>
