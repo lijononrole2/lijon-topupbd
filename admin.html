@@ -1,95 +1,186 @@
+<!-- admin.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Admin Panel</title>
+  <title>Admin Panel - Lijon Top Up</title>
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
   <style>
     body {
+      margin: 0;
       font-family: Arial, sans-serif;
-      padding: 20px;
-      background: #f9f9f9;
+      background: #f0f2f5;
     }
 
-    h1 {
-      text-align: center;
+    header {
+      background: #333;
+      color: white;
+      padding: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .user-info img {
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+    }
+
+    .logout-btn {
+      background: #ff4444;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 30px auto;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
     }
 
     table {
       width: 100%;
       border-collapse: collapse;
-      margin-top: 30px;
-      background: #fff;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      margin-top: 20px;
     }
 
     th, td {
-      padding: 12px;
-      text-align: left;
-      border-bottom: 1px solid #ddd;
+      border: 1px solid #ccc;
+      padding: 10px;
+      text-align: center;
     }
 
-    select {
-      padding: 5px;
+    th {
+      background-color: #007bff;
+      color: white;
     }
 
-    .status {
-      font-weight: bold;
-    }
-
-    .pending {
-      color: orange;
-    }
-
-    .confirmed {
-      color: green;
-    }
-
-    .returned {
-      color: red;
+    .back-btn {
+      margin-top: 20px;
+      background: #007bff;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 6px;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
-  <h1>Admin Panel - Manage Orders</h1>
-  <table>
-    <thead>
-      <tr>
-        <th>Order ID</th>
-        <th>Player ID</th>
-        <th>Diamond</th>
-        <th>Payment</th>
-        <th>Transaction</th>
-        <th>Status</th>
-        <th>Change</th>
-      </tr>
-    </thead>
-    <tbody id="orderTable">
-      <tr>
-        <td>102938</td>
-        <td>123456789</td>
-        <td>200 Diamond</td>
-        <td>bKash</td>
-        <td>TXID12345</td>
-        <td class="status pending">Pending</td>
-        <td>
-          <select onchange="changeStatus(this)">
-            <option value="pending">Pending</option>
-            <option value="confirmed">Confirmed</option>
-            <option value="returned">Returned</option>
-          </select>
-        </td>
-      </tr>
-      <!-- Add more orders manually if needed -->
-    </tbody>
-  </table>
+  <header>
+    <h2>Admin Panel</h2>
+    <div class="user-info" id="adminInfo"></div>
+  </header>
+
+  <div class="container">
+    <h3>All Orders</h3>
+    <table id="ordersTable">
+      <thead>
+        <tr>
+          <th>Package</th>
+          <th>Price</th>
+          <th>UID</th>
+          <th>Method</th>
+          <th>Transaction ID</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Orders will load here -->
+      </tbody>
+    </table>
+
+    <button class="back-btn" onclick="window.location.href='index.html'">Back to Home</button>
+  </div>
 
   <script>
-    function changeStatus(select) {
-      const td = select.parentElement.previousElementSibling;
-      td.textContent = select.options[select.selectedIndex].text;
-      td.className = 'status ' + select.value;
+    const ADMIN_EMAIL = "mdshakillijon255@gmail.com";
+
+    function handleCredentialResponse(response) {
+      const data = parseJwt(response.credential);
+      localStorage.setItem("user", JSON.stringify(data));
+      checkAdminAccess();
     }
+
+    function parseJwt(token) {
+      const base64Url = token.split('.')[1];
+      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      const jsonPayload = decodeURIComponent(atob(base64).split('').map(c => {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+      }).join(''));
+      return JSON.parse(jsonPayload);
+    }
+
+    function checkAdminAccess() {
+      const user = JSON.parse(localStorage.getItem("user"));
+      if (!user || user.email !== ADMIN_EMAIL) {
+        alert("Access Denied. Admin Only.");
+        window.location.href = "index.html";
+        return;
+      }
+
+      document.getElementById("adminInfo").innerHTML = `
+        <img src="${user.picture}" alt="Profile">
+        <span>${user.name}</span>
+        <button class="logout-btn" onclick="logout()">Logout</button>
+      `;
+
+      loadOrders();
+    }
+
+    function logout() {
+      localStorage.removeItem("user");
+      window.location.href = "index.html";
+    }
+
+    function loadOrders() {
+      const tableBody = document.querySelector("#ordersTable tbody");
+      const urlParams = new URLSearchParams(window.location.search);
+      const order = {
+        package: urlParams.get("package"),
+        price: urlParams.get("price"),
+        uid: urlParams.get("uid"),
+        txid: urlParams.get("txid"),
+        method: urlParams.get("method")
+      };
+
+      if (order.package && order.txid) {
+        let orders = JSON.parse(localStorage.getItem("orders") || "[]");
+        orders.push(order);
+        localStorage.setItem("orders", JSON.stringify(orders));
+      }
+
+      const savedOrders = JSON.parse(localStorage.getItem("orders") || "[]");
+
+      tableBody.innerHTML = savedOrders.map(o => `
+        <tr>
+          <td>${o.package}</td>
+          <td>${o.price}</td>
+          <td>${o.uid}</td>
+          <td>${o.method}</td>
+          <td>${o.txid}</td>
+        </tr>
+      `).join('');
+    }
+
+    window.onload = checkAdminAccess;
   </script>
+
+  <div id="g_id_onload"
+       data-client_id="38728064426-5qin12i5a2bk2da9mg73ojkjash3mfmu.apps.googleusercontent.com"
+       data-callback="handleCredentialResponse"
+       data-auto_prompt="false"></div>
 </body>
 </html>
